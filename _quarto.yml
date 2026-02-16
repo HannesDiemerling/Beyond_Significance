@@ -1,0 +1,21 @@
+project:
+  type: website
+
+website:
+  title: "Beyond Significance"
+  sidebar:
+    style: "docked"
+    search: true
+    contents:
+      - index.qmd
+      - chap1.qmd
+      - chap2.qmd
+      - chap3.qmd
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true
+    filters:
+      - shinylive
