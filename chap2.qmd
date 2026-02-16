@@ -1,0 +1,92 @@
+---
+title: "Unit 2: Der Standard-Maßstab"
+---
+
+**Dauer:** 20 Minuten | **Level:** Mittel
+
+Um Ergebnisse vergleichbar zu machen (z.B. Studie A nutzt Skala 1-10, Studie B nutzt 0-100), müssen wir die Einheiten loswerden. Wir standardisieren.
+Das bekannteste Maß für Unterschiede ist **Cohens d**.
+
+$$d = \frac{\text{Mittelwertsdifferenz}}{\text{Streuung}}$$
+
+Es drückt den Unterschied in **Standardabweichungen** aus. Ein $d = 1.0$ bedeutet: Die Gruppen sind genau eine Standardabweichung voneinander entfernt.
+
+### Interaktives Labor: "Seeing d"
+
+Wie fühlt sich ein Effekt von $d = 0.5$ an? Viele überschätzen intuitiv, wie stark sich Gruppen bei psychologischen Effekten unterscheiden.
+
+**Aufgabe:**
+1.  Stellen Sie ein **Cohens d von 0.2** ein (kleiner Effekt). Sehen Sie, wie stark die Kurven überlappen? Würden Sie mit bloßem Auge einen Unterschied erkennen, wenn Sie die Menschen auf der Straße treffen?
+2.  Erhöhen Sie auf **d = 0.8** (großer Effekt).
+3.  Achten Sie auf den Wert **"Überlappung"** und **"Probability of Superiority"**. Letzteres sagt: Wie wahrscheinlich ist es, dass eine zufällige Person aus der Therapiegruppe gesünder ist als eine aus der Kontrollgruppe? (Bei $d=0$ ist es 50% - reiner Zufall).
+
+```{shinylive-python}
+#| standalone: true
+#| viewerHeight: 600
+
+from shiny import App, render, ui
+import numpy as np
+import matplotlib.pyplot as plt
+import scipy.stats as stats
+
+app_ui = ui.page_fluid(
+    ui.layout_sidebar(
+        ui.sidebar(
+            ui.h4("Cohens d Visualizer"),
+            ui.input_slider("d", "Effektstärke (Cohens d)", 0.0, 3.0, 0.5, step=0.1),
+            ui.hr(),
+            ui.p("Faustregeln nach Cohen:"),
+            ui.p("0.2 = Klein"),
+            ui.p("0.5 = Mittel"),
+            ui.p("0.8 = Groß"),
+        ),
+        ui.card(
+            ui.output_plot("d_plot"),
+            ui.output_ui("metrics"),
+        ),
+    ),
+)
+
+def server(input, output, session):
+    @render.plot
+    def d_plot():
+        d = input.d()
+        
+        x = np.linspace(-4, 4 + d, 500)
+        y1 = stats.norm.pdf(x, 0, 1)
+        y2 = stats.norm.pdf(x, d, 1)
+        
+        fig, ax = plt.subplots(figsize=(8, 5))
+        
+        ax.plot(x, y1, color='red', label='Gruppe 1')
+        ax.fill_between(x, y1, color='red', alpha=0.3)
+        
+        ax.plot(x, y2, color='blue', label='Gruppe 2')
+        ax.fill_between(x, y2, color='blue', alpha=0.3)
+        
+        ax.set_title(f"Visualisierung von d = {d}")
+        ax.set_yticks([])
+        ax.legend()
+        
+        return fig
+
+    @render.ui
+    def metrics():
+        d = input.d()
+        
+        # Calculate Probability of Superiority (CL)
+        # P(X1 > X2) = Phi(d / sqrt(2))
+        prob_sup = stats.norm.cdf(d / np.sqrt(2)) * 100
+        
+        # Calculate Overlap (approximate)
+        # OVL = 2 * Phi(-|d|/2)
+        overlap = 2 * stats.norm.cdf(-abs(d)/2) * 100
+        
+        return ui.div(
+            ui.h5("Interpretation:"),
+            ui.p(f"Wenn Sie zufällig eine Person aus Gruppe 2 und eine aus Gruppe 1 ziehen, ist die Person aus Gruppe 2 in {prob_sup:.1f}% der Fälle 'besser' (hat den höheren Wert)."),
+            ui.p(f"Die Verteilungen überlappen sich zu {overlap:.1f}%.")
+        )
+
+app = App(app_ui, server)
+```

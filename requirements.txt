@@ -1,0 +1,7 @@
+shiny
+shinylive
+numpy
+matplotlib
+seaborn
+scipy
+pandas

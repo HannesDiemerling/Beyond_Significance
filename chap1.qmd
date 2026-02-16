@@ -1,0 +1,95 @@
+---
+title: "Unit 1: Die wahre Währung der Forschung"
+---
+
+**Dauer:** 15 Minuten | **Level:** Leicht
+
+Bevor wir anfangen, Daten in abstrakte Kennwerte umzurechnen, müssen wir uns die einfachste und ehrlichste Frage stellen: **"Wie viel?"** in den Einheiten des Messinstruments.
+
+Wenn eine Diät das Gewicht um 3,4 kg reduziert, ist das ein **unstandardisierter Effekt**. Wir brauchen keine Statistik, um zu wissen, ob das viel ist – wir brauchen Kontextwissen.
+
+### Das Problem der latenten Variablen
+In der Psychologie messen wir oft Dinge, die keine natürliche Einheit haben (z.B. Depression auf einer Skala von 0-50). Ein Unterschied von 2 Punkten ist schwerer zu interpretieren als 2 kg.
+Dennoch ist der unstandardisierte Effekt (z.B. der Regressionskoeffizient $b$ oder die Mittelwertsdifferenz) die direkteste Antwort auf eine Forschungsfrage.
+
+### Interaktives Labor: Der Kontext-Simulator
+
+Wir vergleichen hier zwei Studien zur Wirksamkeit einer Therapie. Beide finden denselben absoluten Unterschied (Mittelwertsdifferenz), aber in unterschiedlichen Kontexten (unterschiedliche Streuung der Daten).
+
+**Aufgabe:**
+1.  Stellen Sie die **Mittelwertsdifferenz** auf 2.0. (Die Therapiegruppe hat 2 Punkte weniger Symptome).
+2.  Lassen Sie die **Standardabweichung (Streuung)** zunächst klein (z.B. 2.0). Schauen Sie sich die Grafik an: Die Gruppen sind klar getrennt. Die 2 Punkte Unterschied sind hier "riesig".
+3.  Erhöhen Sie nun die **Streuung** auf 10.0, *ohne* die Mittelwertsdifferenz zu ändern.
+4.  Beobachten Sie: Der unstandardisierte Effekt (2 Punkte) ist absolut gesehen **gleich geblieben**. Aber im "Rauschen" der Daten (der Streuung) geht er nun fast unter.
+
+Ist der Effekt von 2 Punkten nun bedeutsam? Das hängt von der Streuung ab!
+
+```{shinylive-python}
+#| standalone: true
+#| viewerHeight: 600
+
+from shiny import App, render, ui
+import numpy as np
+import matplotlib.pyplot as plt
+import scipy.stats as stats
+
+app_ui = ui.page_fluid(
+    ui.layout_sidebar(
+        ui.sidebar(
+            ui.h4("Effekt-Kontext"),
+            ui.input_slider("mean_diff", "Unstandardisierter Effekt (Differenz)", 0, 10, 2, step=0.5),
+            ui.input_slider("sd", "Streuung in der Population (SD)", 1, 10, 2, step=0.5),
+            ui.hr(),
+            ui.p("Vergleich von zwei Gruppen (Kontrolle vs. Therapie)."),
+        ),
+        ui.card(
+            ui.output_plot("dist_plot"),
+            ui.output_text_verbatim("stats_text"),
+        ),
+    ),
+)
+
+def server(input, output, session):
+    @render.plot
+    def dist_plot():
+        diff = input.mean_diff()
+        sd = input.sd()
+        
+        # Plotting range
+        x = np.linspace(-15, 25, 400)
+        
+        # Distributions
+        y_control = stats.norm.pdf(x, 0, sd)
+        y_therapy = stats.norm.pdf(x, diff, sd) # Shifted by diff
+        
+        fig, ax = plt.subplots(figsize=(8, 5))
+        
+        # Fill areas
+        ax.fill_between(x, y_control, alpha=0.5, color='gray', label='Kontrollgruppe')
+        ax.fill_between(x, y_therapy, alpha=0.5, color='blue', label='Therapiegruppe')
+        
+        # Means vertical lines
+        ax.axvline(0, color='gray', linestyle='--')
+        ax.axvline(diff, color='blue', linestyle='--')
+        
+        # Annotation arrow for difference
+        ax.annotate("", xy=(diff, max(y_control)*1.05), xytext=(0, max(y_control)*1.05),
+                    arrowprops=dict(arrowstyle="<->", lw=2))
+        ax.text(diff/2, max(y_control)*1.1, f"Diff = {diff}", ha='center')
+        
+        ax.set_title("Absolute Differenz im Kontext der Streuung")
+        ax.set_xlabel("Symptom-Score (Skalenpunkte)")
+        ax.set_yticks([])
+        ax.legend()
+        
+        return fig
+
+    @render.text
+    def stats_text():
+        diff = input.mean_diff()
+        sd = input.sd()
+        cohen_d = diff / sd
+        return f"Absoluter Effekt: {diff} Punkte\nStandardabweichung: {sd}\n--> Relativer Effekt (Cohen's d): {cohen_d:.2f}"
+
+app = App(app_ui, server)
+```
