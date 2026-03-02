@@ -11,6 +11,9 @@ website:
       - chap1.qmd
       - chap2.qmd
       - chap3.qmd
+      - chap4.qmd
+      - chap5.qmd
+      - chap6.qmd
 
 format:
   html:

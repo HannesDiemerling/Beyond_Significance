@@ -1,0 +1,94 @@
+---
+title: "2.4 Standardisierte Effektgrößen"
+format: html
+---
+
+## Zeit: 15 min | Schwierigkeit: Einsteiger
+
+### Theorie: Äpfel mit Birnen vergleichen
+Unstandardisierte Effekte in originalen Maßeinheiten stoßen an ihre Grenzen, wenn du Studien vergleichen willst, die unterschiedliche Messinstrumente verwenden. 
+
+Wie vergleichst du eine Maßnahme, die in Minuten gemessen wird, mit einer Maßnahme, die in Punkten auf einer eigenen Skala gemessen wird? Hierfür benötigen wir standardisierte Effektgrößen. Sie transformieren das Ergebnis in eine einheitliche und vergleichbare Metrik. Diese Transformation gehört zur deskriptiven Statistik. Sie berechnet den Effekt in Standardabweichungen (Cohen, 1988).
+
+Die bekannteste standardisierte Effektgröße ist Cohens d. Die Berechnung ist simpel. Du teilst den absoluten Unterschied der Mittelwerte durch die Streuung der Daten. Das Ergebnis ist eine dimensionslose Zahl ohne Maßeinheit. Ein Wert von 0.5 bedeutet, dass sich die Gruppen um genau eine halbe Standardabweichung unterscheiden. Nun kannst du Äpfel mit Birnen vergleichen.
+
+### Beispiel Deutsche Bahn: Zeit gegen Zufriedenheit
+Der Vorstand der Bahn evaluiert zwei völlig unterschiedliche Projekte. 
+Projekt A ist ein neues Wartungssystem, welches die durchschnittliche Verspätung reduziert, die Maßeinheit sind Minuten.
+Projekt B ist ein neues Schulungsprogramm für das Zugpersonal welches die Freundlichkeit verbessert, die Maßeinheit sind Punkte auf einem Fragebogen zur Kundenzufriedenheit.
+
+Beide Projekte sind erfolgreich. Projekt A senkt die Verspätung um 5 Minuten. Projekt B steigert die Zufriedenheit um 12 Punkte. Welches Projekt hatte den größeren statistischen Effekt? 
+
+5 Minuten und 12 Punkte lassen sich nicht direkt vergleichen, inhaltlich sind dies völlig unterschiedliche Messungen. Wir müssen beide Ergebnisse in Cohens d umrechnen, damit wir sie vergleichen können. Dafür setzen wir die absolute Verbesserung ins Verhältnis zur jeweiligen Streuung (Standardabweichung) der Daten. Erst nach dieser Standardisierung wird sichtbar, welches Projekt die Realität stärker verändert hat, ganz unabhängig davon, das die Maßeinheiten unterschiedlich sind.
+
+### Deine Aufgabe
+Die App ist ein Umrechner für standardisierte Effekte. Du vergleichst Projekt A (Verspätung in Minuten) mit Projekt B (Zufriedenheit in Punkten).
+
+1. **Beobachten:** Bei den Startwerten bewirkt Projekt A eine Verbesserung um 5 Minuten. Die natürliche Streuung der Verspätung ist jedoch riesig (10 Minuten). Der standardisierte Effekt Cohens d ist mit 0.5 moderat. 
+2. **Projekt B analysieren:** Projekt B bringt 12 Punkte mehr Zufriedenheit. Die Streuung bei den Antworten ist mit 15 Punkten ebenfalls hoch. Cohens d liegt bei 0.8. Projekt B hat den stärkeren Effekt erzielt.
+3. **Werte standardisieren:** Verändere die absoluten Effekte und die Streuung beider Projekte. Beobachte im unteren Diagramm, wie die völlig unterschiedlichen Rohdaten in eine einheitliche und vergleichbare Metrik gezwungen werden.
+
+```{shinylive-python}
+#| standalone: true
+#| viewerHeight: 650
+
+from shiny import App, render, ui
+import matplotlib.pyplot as plt
+
+app_ui = ui.page_fluid(
+    ui.card(
+        ui.card_header("Umrechner: Standardisierte Effektgrößen Cohens d"),
+        ui.layout_columns(
+            ui.div(
+                ui.h5("Projekt A: Verspätung"),
+                ui.input_slider("eff_a", "Verbesserung in Minuten", 1, 20, 5),
+                ui.input_slider("sd_a", "Schwankung in Minuten", 1, 20, 10),
+                ui.hr(),
+                ui.h5("Projekt B: Kundenzufriedenheit"),
+                ui.input_slider("eff_b", "Verbesserung in Punkten", 1, 50, 12),
+                ui.input_slider("sd_b", "Schwankung in Punkten", 1, 50, 15),
+            ),
+            ui.output_plot("cohen_plot"),
+            col_widths=(4, 8)
+        )
+    )
+)
+
+def server(input, output, session):
+    @render.plot
+    def cohen_plot():
+        d_a = input.eff_a() / input.sd_a()
+        d_b = input.eff_b() / input.sd_b()
+        
+        fig, ax = plt.subplots(figsize=(10, 6))
+        
+        categories = ['Projekt A\n(Verspätung)', 'Projekt B\n(Zufriedenheit)']
+        values = [d_a, d_b]
+        
+        bars = ax.bar(categories, values, color=['#2980b9', '#27ae60'], width=0.5)
+        
+        ax.set_ylim(0, max(3.0, max(values) * 1.2))
+        ax.set_ylabel("Standardisierter Effekt (Cohens d)")
+        ax.set_title("Vergleich der Effektivität auf einer einheitlichen Skala")
+        
+        ax.axhline(0.2, color='#7f8c8d', linestyle='dotted', alpha=0.5)
+        ax.axhline(0.5, color='#7f8c8d', linestyle='dotted', alpha=0.5)
+        ax.axhline(0.8, color='#7f8c8d', linestyle='dotted', alpha=0.5)
+        
+        ax.text(-0.4, 0.22, 'Kleiner Effekt', color='#7f8c8d', fontsize=9)
+        ax.text(-0.4, 0.52, 'Mittlerer Effekt', color='#7f8c8d', fontsize=9)
+        ax.text(-0.4, 0.82, 'Großer Effekt', color='#7f8c8d', fontsize=9)
+        
+        for bar in bars:
+            height = bar.get_height()
+            ax.text(bar.get_x() + bar.get_width()/2., height + 0.05,
+                    f'd = {height:.2f}',
+                    ha='center', va='bottom', fontweight='bold', fontsize=12)
+                    
+        ax.spines['top'].set_visible(False)
+        ax.spines['right'].set_visible(False)
+        
+        return fig
+
+app = App(app_ui, server)
+```

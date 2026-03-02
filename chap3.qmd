@@ -1,110 +1,87 @@
 ---
-title: "Unit 3: Die Kraft der Varianz"
+title: "2.3 Unstandardisierte Effekte"
+format: html
 ---
 
-**Dauer:** 20 Minuten | **Level:** Mittel/Schwer
+## Zeit: 15 min | Schwierigkeit: Einsteiger
 
-Neben Abstandsmaßen (d) gibt es eine zweite Familie von Effektstärken: **Zusammenhangsmaße**. Sie beantworten die Frage: "Wie viel Prozent der Unterschiede zwischen den Menschen kann ich durch meinen Faktor erklären?"
+### Theorie: Die Rückkehr in die reale Welt
+Wissenschaftliche Forschungsfragen zielen im Kern immer auf Effekte ab. Ein Effekt ist die tatsächliche messbare Veränderung in der realen Welt. Er ist die einzig relevante Größe für die Theorieentwicklung und für praktische Interventionen. 
 
-Hier nutzen wir oft $r$, $R^2$ oder (in der Varianzanalyse) **Eta-Quadrat** ($\eta^2$).
-Ein $\eta^2 = 0.20$ bedeutet: 20% der Unterschiede in den Daten gehen auf unsere Gruppenaufteilung zurück.
+Unstandardisierte Effekte messen diese Veränderung strikt in der Einheit des verwendeten Messinstruments. Sie beantworten die Frage nach der Existenz und der exakten Größe eines Effektes direkt und intuitiv. Sie bilden die Basis für praktische Entscheidungen in der echten Welt (Baguley, 2009). Ein p Wert verrät wiederum nicht, ob eine Maßnahme ihr Geld wert ist, nur ob ein schwellwert überschritten wurde.
 
-### Interaktives Labor: Der Varianz-Erklärer
+### Beispiel Deutsche Bahn: Das Millionenprojekt
+Die Bahn investiert hunderte Millionen Euro in ein neues Wartungskonzept für Weichen. Du willst wissen, ob dieses Konzept die Pünktlichkeit verbessert. Die rohe Maßeinheit für diese Untersuchung ist Zeitersparniss in Minuten. 
 
-Hier simulieren wir Daten für 3 Gruppen (z.B. drei Berufsgruppen und ihr Einkommen).
+Sinkt die durchschnittliche Verspätung durch das Projekt um 0,5 Minuten oder um 15 Minuten? Dieser absolute Unterschied in Rohwerten ist dein unstandardisierter Effekt. Er ist sofort greifbar. 0,5 Minuten weniger Verspätung retten deinen Anschlusszug nicht, das Projekt wäre in der Praxis ein Flop. 15 Minuten weniger Verspätung verändern deinen Pendleralltag massiv. Der unstandardisierte Effekt in Minuten liefert dir die entscheidende Information, um die praktische Relevanz des Projekts zu beurteilen. Er ist die Brücke von der Statistik zur Realität.
 
-**Aufgabe:**
-1.  Erhöhen Sie die **"Unterschiede zwischen den Gruppen"** (Between-Group Variance). Das bedeutet, die Mittelwerte der Gruppen rücken auseinander.
-2.  Beobachten Sie, wie das **Eta-Quadrat** steigt.
-3.  Erhöhen Sie nun die **"Streuung innerhalb der Gruppen"** (Within-Group Variance). Die Gruppen vermischen sich stärker.
-4.  Beobachten Sie, wie das Eta-Quadrat sinkt, *obwohl* die Mittelwerte gleich geblieben sind!
-5.  Erkenntnis: Eta-Quadrat ist ein Verhältnis aus "Erklärtem" (Unterschiede) zu "Gesamt" (Unterschiede + Rauschen).
+### Deine Aufgabe
+Die App zeigt dir zwei überlappende Histogramme. Sie repräsentieren die gemessenen Verspätungen in Minuten. Grau ist das alte, Blau ist das neue Wartungskonzept.
+
+1. **Beobachten:** Bei den Startwerten überschneiden sich die Verteilungen stark. Der unstandardisierte Effekt (die absolute Distanz zwischen den Mittelwerten) beträgt 5 Minuten.
+2. **Effekt vergrößern:** Verschiebe den Durchschnitt des neuen Konzepts auf 2 Minuten. Die blaue Verteilung wandert nach links. Der unstandardisierte Effekt wächst auf 13 Minuten an. Die praktische Relevanz wird sofort im Histogramm sichtbar.
+3. **Streuung begreifen:** Erhöhe die Schwankung der Verspätung des neuen Konzepts. Die blaue Verteilung wird flach und extrem breit. Obwohl der durchschnittliche Effekt gleich bleibt, wird die Zuverlässigkeit des neuen Systems für den einzelnen Fahrgast völlig unkalkulierbar.
 
 ```{shinylive-python}
 #| standalone: true
-#| viewerHeight: 600
+#| viewerHeight: 650
 
-from shiny import App, render, ui
+from shiny import App, render, ui, reactive
 import numpy as np
-import pandas as pd
 import matplotlib.pyplot as plt
-import seaborn as sns
 
 app_ui = ui.page_fluid(
-    ui.layout_sidebar(
-        ui.sidebar(
-            ui.h4("ANOVA Simulator"),
-            ui.input_slider("between_var", "Unterschiede ZWISCHEN Gruppen (Mittelwerts-Distanz)", 0, 10, 2),
-            ui.input_slider("within_var", "Streuung INNERHALB Gruppen (Noise)", 0.5, 5, 1, step=0.5),
-            ui.hr(),
-            ui.p("Berechnet Eta-Quadrat basierend auf simulierten Rohdaten."),
-        ),
-        ui.card(
-            ui.output_plot("anova_plot"),
-            ui.output_text_verbatim("eta_output"),
-        ),
-    ),
+    ui.card(
+        ui.card_header("Histogramme: Unstandardisierte Effekte in Minuten"),
+        ui.layout_columns(
+            ui.div(
+                ui.h5("Neues Wartungskonzept"),
+                ui.input_slider("new_mean", "Durchschnittliche Verspätung", 0, 30, 10),
+                ui.input_slider("new_sd", "Schwankung der Verspätung", 1, 15, 4),
+                ui.hr(),
+                ui.p("Das alte System liegt fix bei 15 Minuten Durchschnitt und 5 Minuten Schwankung."),
+            ),
+            ui.output_plot("hist_plot"),
+            col_widths=(4, 8)
+        )
+    )
 )
 
 def server(input, output, session):
-    
-    def get_data():
-        np.random.seed(42)
-        n_per_group = 30
-        dist = input.between_var()
-        noise = input.within_var()
-        
-        # Create 3 groups with increasing means centered around 0
-        # Group 1: -dist, Group 2: 0, Group 3: +dist
-        g1 = np.random.normal(-dist, noise, n_per_group)
-        g2 = np.random.normal(0, noise, n_per_group)
-        g3 = np.random.normal(dist, noise, n_per_group)
-        
-        df = pd.DataFrame({
-            'Wert': np.concatenate([g1, g2, g3]),
-            'Gruppe': ['A'] * n_per_group + ['B'] * n_per_group + ['C'] * n_per_group
-        })
-        return df
-
     @render.plot
-    def anova_plot():
-        df = get_data()
+    def hist_plot():
+        mean_old = 15.0
+        sd_old = 5.0
         
-        fig, ax = plt.subplots(figsize=(8, 5))
-        # Strip plot + Box plot combo
-        sns.boxplot(x='Gruppe', y='Wert', data=df, ax=ax, color='lightgray', showfliers=False)
-        sns.stripplot(x='Gruppe', y='Wert', data=df, ax=ax, alpha=0.6, jitter=0.2)
+        mean_new = input.new_mean()
+        sd_new = input.new_sd()
         
-        ax.set_title("Verteilung der Rohdaten")
+        np.random.seed(42)
+        data_old = np.random.normal(mean_old, sd_old, 1000)
+        data_new = np.random.normal(mean_new, sd_new, 1000)
+        
+        fig, ax = plt.subplots(figsize=(10, 6))
+        
+        bins = np.linspace(-10, 40, 50)
+        
+        ax.hist(data_old, bins=bins, alpha=0.5, color='#7f8c8d', label='Altes System', density=True)
+        ax.hist(data_new, bins=bins, alpha=0.6, color='#2980b9', label='Neues Konzept', density=True)
+        
+        ax.axvline(mean_old, color='#34495e', linestyle='dotted', linewidth=2)
+        ax.axvline(mean_new, color='#2c3e50', linestyle='dotted', linewidth=2)
+        
+        effect_size = mean_old - mean_new
+        
+        ax.set_title(f"Unstandardisierter Effekt: {effect_size:.1f} Minuten Verbesserung")
+        ax.set_xlabel("Verspätung in Minuten (Rohwerte)")
+        ax.set_ylabel("Relative Häufigkeit")
+        ax.set_xlim(-10, 40)
+        
+        ax.legend(loc="upper right")
+        ax.spines['top'].set_visible(False)
+        ax.spines['right'].set_visible(False)
+        
         return fig
-
-    @render.text
-    def eta_output():
-        df = get_data()
-        
-        # Manual One-Way ANOVA Calculation for Eta-Squared
-        # Total Mean
-        grand_mean = df['Wert'].mean()
-        
-        # SST (Total Sum of Squares)
-        sst = np.sum((df['Wert'] - grand_mean)**2)
-        
-        # SSW (Within Sum of Squares)
-        groups = df.groupby('Gruppe')
-        ssw = np.sum(groups.apply(lambda x: np.sum((x['Wert'] - x['Wert'].mean())**2), include_groups=False))
-        
-        # SSB (Between Sum of Squares)
-        ssb = sst - ssw
-        
-        # Eta Squared
-        eta_sq = ssb / sst
-        
-        return (f"Sum of Squares Between (Erklärt): {ssb:.1f}\n"
-                f"Sum of Squares Within (Fehler):   {ssw:.1f}\n"
-                f"Sum of Squares Total (Gesamt):    {sst:.1f}\n"
-                f"--------------------------------------\n"
-                f"Eta-Quadrat (n^2): {eta_sq:.3f}\n"
-                f"(Das Modell erklärt {eta_sq*100:.1f}% der Varianz)")
 
 app = App(app_ui, server)
 ```

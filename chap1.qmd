@@ -1,95 +1,92 @@
 ---
-title: "Unit 1: Die wahre Währung der Forschung"
+title: "2.1 Fehlinterpretationen und binäres Denken"
+format: html
 ---
 
-**Dauer:** 15 Minuten | **Level:** Leicht
+## Zeit: 15 min | Schwierigkeit: Einsteiger
 
-Bevor wir anfangen, Daten in abstrakte Kennwerte umzurechnen, müssen wir uns die einfachste und ehrlichste Frage stellen: **"Wie viel?"** in den Einheiten des Messinstruments.
+### Theorie: Die Illusion der harten Grenze
+Der p Wert ist die am häufigsten missverstandene Metrik der modernen Wissenschaft. Er liefert explizit keine Antworten auf die eigentlichen Kernfragen der Forschung. Er sagt dir weder, ob ein Effekt in der Realität wahr ist, noch wie wahrscheinlich es ist, dass dein Ergebnis bei einer Wiederholung der Studie identisch ausfällt. 
 
-Wenn eine Diät das Gewicht um 3,4 kg reduziert, ist das ein **unstandardisierter Effekt**. Wir brauchen keine Statistik, um zu wissen, ob das viel ist – wir brauchen Kontextwissen.
+Besonders gefährlich ist die etablierte Praxis, eine starre Signifikanzschwelle (meist 0.05) zu definieren. Die Natur zieht keine magische Grenze zwischen 0.049 und 0.051. Ein solcher Schwellenwert erzwingt unlogische, rein binäre Entscheidungen (Gigerenzer, 2004). Er überlagert den Blick auf die echten Daten und verführt dazu, messbare Nuancen in ein extremes "Erfolg" oder "Misserfolg" Schema zu pressen.
 
-### Das Problem der latenten Variablen
-In der Psychologie messen wir oft Dinge, die keine natürliche Einheit haben (z.B. Depression auf einer Skala von 0-50). Ein Unterschied von 2 Punkten ist schwerer zu interpretieren als 2 kg.
-Dennoch ist der unstandardisierte Effekt (z.B. der Regressionskoeffizient $b$ oder die Mittelwertsdifferenz) die direkteste Antwort auf eine Forschungsfrage.
+### Beispiel Deutsche Bahn: Der eine Zug
+Die Bahn testet ein neues Boarding Verfahren an zwei verschiedenen Bahnhöfen. In Studie A reduziert das Verfahren die Wartezeit leicht. Der berechnete p Wert liegt bei 0.049. Das Projektteam meldet einen hochoffiziellen, signifikanten Erfolg und fordert Millionen für den Rollout.
 
-### Interaktives Labor: Der Kontext-Simulator
+In Studie B, am anderen Bahnhof, wird das selbe Verfahren getestet. Die Daten sehen visuell absolut identisch aus. Nur ein einziger Zug hatte durch einen Passagier eine kleine Verzögerung. Der p Wert rutscht auf 0.051. Die interne Software meldet ein nicht signifikantes Ergebnis. Studie B wird als völliger Misserfolg abgestempelt und in der Schublade versteckt. Zwei praktisch identische Studien werden durch das binäre Denken komplett konträr bewertet und führen zu unsinnigen schlusfolgerungen.
 
-Wir vergleichen hier zwei Studien zur Wirksamkeit einer Therapie. Beide finden denselben absoluten Unterschied (Mittelwertsdifferenz), aber in unterschiedlichen Kontexten (unterschiedliche Streuung der Daten).
+### Deine Aufgabe
+Die Applikation zeigt dir die Rohdaten einer solchen Auswertung als Streudiagramm. Das alte System wird mit dem neuen Verfahren verglichen. 
 
-**Aufgabe:**
-1.  Stellen Sie die **Mittelwertsdifferenz** auf 2.0. (Die Therapiegruppe hat 2 Punkte weniger Symptome).
-2.  Lassen Sie die **Standardabweichung (Streuung)** zunächst klein (z.B. 2.0). Schauen Sie sich die Grafik an: Die Gruppen sind klar getrennt. Die 2 Punkte Unterschied sind hier "riesig".
-3.  Erhöhen Sie nun die **Streuung** auf 10.0, *ohne* die Mittelwertsdifferenz zu ändern.
-4.  Beobachten Sie: Der unstandardisierte Effekt (2 Punkte) ist absolut gesehen **gleich geblieben**. Aber im "Rauschen" der Daten (der Streuung) geht er nun fast unter.
-
-Ist der Effekt von 2 Punkten nun bedeutsam? Das hängt von der Streuung ab!
+1. **Beobachten:** Du siehst die Verspätungen der einzelnen Züge. Das neue System (blau) scheint etwas besser zu sein. Der p Wert liegt knapp unter 0.05. Das Urteil leuchtet grün: Signifikant.
+2. **Minimal manipulieren:** Greife dir den roten manipulierbaren Zug im neuen System. Schiebe seine Verspätung mit dem Regler um den Bruchteil einer Minute nach oben. 
+3. **Das Absurde erkennen:** Die visuelle Verteilung der Daten verändert sich für das menschliche Auge praktisch überhaupt nicht. Dennoch springt der p Wert über die Schwelle von 0.05. Das Urteil kippt sofort auf rot. Ein Millionenprojekt scheitert statistisch an den Sekunden eines einzigen Koffers.
 
 ```{shinylive-python}
 #| standalone: true
-#| viewerHeight: 600
+#| viewerHeight: 650
 
 from shiny import App, render, ui
 import numpy as np
 import matplotlib.pyplot as plt
-import scipy.stats as stats
+from scipy.stats import ttest_ind
 
 app_ui = ui.page_fluid(
-    ui.layout_sidebar(
-        ui.sidebar(
-            ui.h4("Effekt-Kontext"),
-            ui.input_slider("mean_diff", "Unstandardisierter Effekt (Differenz)", 0, 10, 2, step=0.5),
-            ui.input_slider("sd", "Streuung in der Population (SD)", 1, 10, 2, step=0.5),
-            ui.hr(),
-            ui.p("Vergleich von zwei Gruppen (Kontrolle vs. Therapie)."),
-        ),
-        ui.card(
-            ui.output_plot("dist_plot"),
-            ui.output_text_verbatim("stats_text"),
-        ),
-    ),
+    ui.card(
+        ui.card_header("Binäres Denken: Der p Wert Kipppunkt"),
+        ui.layout_columns(
+            ui.div(
+                ui.h5("Daten minimal manipulieren"),
+                ui.input_slider("outlier", "Verspätung des roten Zuges", 8.0, 14.0, 9.8, step=0.1),
+                ui.hr(),
+                ui.p("Bewege den Regler minimal um 0.05 zu überschreiten. Das statistische Urteil kippt komplett, obwohl die Daten visuell fast identisch bleiben."),
+            ),
+            ui.output_plot("scatter_plot"),
+            col_widths=(4, 8)
+        )
+    )
 )
 
 def server(input, output, session):
     @render.plot
-    def dist_plot():
-        diff = input.mean_diff()
-        sd = input.sd()
+    def scatter_plot():
+        np.random.seed(42)
+        group_a = np.random.normal(12.5, 2.5, 20)
+        group_b = np.random.normal(10.5, 2.5, 19)
         
-        # Plotting range
-        x = np.linspace(-15, 25, 400)
+        val = input.outlier()
+        group_b_full = np.append(group_b, val)
         
-        # Distributions
-        y_control = stats.norm.pdf(x, 0, sd)
-        y_therapy = stats.norm.pdf(x, diff, sd) # Shifted by diff
+        t_stat, p_val = ttest_ind(group_a, group_b_full)
         
-        fig, ax = plt.subplots(figsize=(8, 5))
+        fig, ax = plt.subplots(figsize=(10, 6))
         
-        # Fill areas
-        ax.fill_between(x, y_control, alpha=0.5, color='gray', label='Kontrollgruppe')
-        ax.fill_between(x, y_therapy, alpha=0.5, color='blue', label='Therapiegruppe')
+        x_a = np.random.normal(1, 0.04, len(group_a))
+        x_b = np.random.normal(2, 0.04, len(group_b_full)-1)
+        x_outlier = 2.0
         
-        # Means vertical lines
-        ax.axvline(0, color='gray', linestyle='--')
-        ax.axvline(diff, color='blue', linestyle='--')
+        ax.scatter(x_a, group_a, color='#7f8c8d', alpha=0.7, s=100, label='Altes System')
+        ax.scatter(x_b, group_b, color='#3498db', alpha=0.7, s=100, label='Neues Verfahren')
+        ax.scatter([x_outlier], [val], color='#e74c3c', s=200, zorder=5, label='Manipulierter Zug')
         
-        # Annotation arrow for difference
-        ax.annotate("", xy=(diff, max(y_control)*1.05), xytext=(0, max(y_control)*1.05),
-                    arrowprops=dict(arrowstyle="<->", lw=2))
-        ax.text(diff/2, max(y_control)*1.1, f"Diff = {diff}", ha='center')
+        ax.set_xticks([1, 2])
+        ax.set_xticklabels(['Altes System', 'Neues Verfahren'], fontsize=12)
+        ax.set_xlim(0.5, 2.5)
+        ax.set_ylim(4, 20)
+        ax.set_ylabel("Verspätung in Minuten")
         
-        ax.set_title("Absolute Differenz im Kontext der Streuung")
-        ax.set_xlabel("Symptom-Score (Skalenpunkte)")
-        ax.set_yticks([])
-        ax.legend()
+        is_sig = p_val < 0.05
+        title_color = '#27ae60' if is_sig else '#c0392b'
+        status = "SIGNIFIKANT (Erfolg!)" if is_sig else "NICHT SIGNIFIKANT (Misserfolg!)"
+        
+        ax.set_title(f"p Wert: {p_val:.3f}  |  Urteil: {status}", color=title_color, fontweight='bold', fontsize=14)
+        ax.axhline(val, color='#e74c3c', linestyle='dotted', alpha=0.3)
+        
+        ax.spines['top'].set_visible(False)
+        ax.spines['right'].set_visible(False)
+        ax.legend(loc='upper right')
         
         return fig
-
-    @render.text
-    def stats_text():
-        diff = input.mean_diff()
-        sd = input.sd()
-        cohen_d = diff / sd
-        return f"Absoluter Effekt: {diff} Punkte\nStandardabweichung: {sd}\n--> Relativer Effekt (Cohen's d): {cohen_d:.2f}"
 
 app = App(app_ui, server)
 ```

@@ -1,0 +1,80 @@
+---
+title: "2.5 Praktische Bedeutsamkeit"
+format: html
+---
+
+## Zeit: 15 min | Schwierigkeit: Einsteiger
+
+### Theorie: Messbar ist nicht gleich wichtig
+Statistische Signifikanz wird oft fälschlicherweise mit praktischer Bedeutsamkeit gleichgesetzt. Die Relevanz einer Maßnahme für die Praxis kann ausschließlich anhand der tatsächlichen Effektgröße beurteilt werden. 
+
+Ein winziger p Wert bedeutet lediglich, dass ein Effekt mit hoher Sicherheit nicht exakt null ist. Über den echten Nutzen in der realen Welt sagt diese Metrik wenig aus. Cohen beispielsweise kritisierte diese Verwechslung scharf und betonte, dass eine quantitative Wissenschaft ihr primäres Ziel verfehlt, wenn sie Entscheidungen auf p Werte stützt anstatt auf die messbare Größe von Effekten (Cohen, 1990).
+
+### Beispiel Deutsche Bahn: Das teure Türsystem
+Die Bahn entwickelt eine neue Türsteuerung für den ICE. Eine gigantische Studie mit hunderttausend Fahrten beweist: Die neuen Türen senken die durchschnittliche Verspätung am Bahnhof "statistisch hochsignifikant". Das Projektteam feiert den winzigen p Wert als enormen Erfolg und präsentieren den niedrigen Wert als beweis, wie praktisch relevant das Projekt ist.
+
+Du betrachtest als Pendler den unstandardisierten Effekt. Die durchschnittliche Verspätung sinkt durch die neuen Türen um exakt 4 Sekunden. Ein statistisch signifikanter, aber extrem kleiner (Und in der Realität irrelevanter) Effekt rechtfertigt jedoch keine teuren Interventionen in der Praxis. Die praktische Bedeutsamkeit für deinen Alltag ist null, Die notwendigen Investitionen an anderer Stelle besser investiert.
+
+### Deine Aufgabe
+Die Applikation visualisiert das Konzept der Relevanzgrenze. Du definierst selbst, wann ein Zeitgewinn für dich als Fahrgast eine echte praktische Bedeutsamkeit erreicht.
+
+1. **Beobachten:** Bei den Startwerten bewirkt das Projekt eine extrem kleine Verbesserung von 4 Sekunden. Das Projekt verfehlt deine Relevanzschwelle massiv und wird als irrelevant rot markiert.
+2. **Schwellenwert definieren:** Ab wann ist ein Zeitgewinn für dich im Alltag relevant? Setze die Schwelle für praktische Relevanz auf 300 Sekunden.
+3. **Bewerten:** Verändere den gemessenen Effekt der Studie mit dem oberen Regler. Nur wenn der tatsächliche Effekt deine definierte Schwelle überschreitet, färbt sich der Balken grün. Erst dann besitzt die statistische Signifikanz eine reale praktische Bedeutsamkeit.
+
+```{shinylive-python}
+#| standalone: true
+#| viewerHeight: 650
+
+from shiny import App, render, ui
+import matplotlib.pyplot as plt
+
+app_ui = ui.page_fluid(
+    ui.card(
+        ui.card_header("Bewertung: Signifikanz vs Praktische Relevanz"),
+        ui.layout_columns(
+            ui.div(
+                ui.h5("Studienergebnis"),
+                ui.input_slider("eff_mess", "Gemessener Effekt (Sekunden)", 1, 600, 4),
+                ui.hr(),
+                ui.h5("Deine persönliche Grenze"),
+                ui.input_slider("eff_rel", "Schwelle für praktische Relevanz (Sekunden)", 10, 600, 300),
+                ui.p("Hinweis: Der gemessene Effekt ist laut Studie statistisch hochsignifikant p < 0.001."),
+            ),
+            ui.output_plot("relevanz_plot"),
+            col_widths=(4, 8)
+        )
+    )
+)
+
+def server(input, output, session):
+    @render.plot
+    def relevanz_plot():
+        eff_mess = input.eff_mess()
+        eff_rel = input.eff_rel()
+        
+        fig, ax = plt.subplots(figsize=(10, 6))
+        
+        is_relevant = eff_mess >= eff_rel
+        bar_color = '#27ae60' if is_relevant else '#c0392b'
+        
+        ax.bar(["Gemessener Zeitgewinn"], [eff_mess], color=bar_color, width=0.4)
+        
+        ax.axhline(eff_rel, color='#34495e', linestyle='dotted', linewidth=2.5)
+        ax.text(0.25, eff_rel + 10, f'Relevanzschwelle: {eff_rel} Sekunden', color='#34495e', fontweight='bold', fontsize=11)
+        
+        ax.set_ylim(0, 700)
+        ax.set_ylabel("Zeitgewinn in Sekunden")
+        
+        status_text = "Praktisch relevant" if is_relevant else "Praktisch irrelevant"
+        ax.set_title(f"Bewertung: Hochsignifikant, aber {status_text.lower()}", fontweight='bold')
+        
+        ax.spines['top'].set_visible(False)
+        ax.spines['right'].set_visible(False)
+        ax.spines['bottom'].set_visible(False)
+        ax.set_xticks([])
+        
+        return fig
+
+app = App(app_ui, server)
+```
