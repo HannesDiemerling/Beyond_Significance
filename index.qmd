@@ -1,5 +1,5 @@
 ---
-title: "Effekte und Effektgrößen: Ein interaktiver Workshop"
+title: "Beyond Significance: Praktische Relevanz von Effekten verstehen"
 ---
 
 ## Signifikanz versus Relevanz: Dein Einstieg
