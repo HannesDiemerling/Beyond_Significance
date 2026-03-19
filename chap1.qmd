@@ -49,7 +49,7 @@ app_ui = ui.page_fluid(
         ui.card_header("SmartRail: Gleicher Effekt, gegensätzliche Urteile"),
         ui.layout_columns(
             ui.div(
-                ui.h5("Strecke Hamburg\u2013Berlin einstellen"),
+                ui.h5("Strecke Hamburg–Berlin einstellen"),
                 ui.input_slider(
                     "sd_hb",
                     "Streuung der Verspätung (Minuten)",
@@ -80,7 +80,8 @@ def server(input, output, session):
         _, p_muc = ttest_ind(old_muc, new_muc)
         _, p_hb  = ttest_ind(old_hb,  new_hb)
 
-        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 6), sharey=False)
+        # Erhöhte Breite (14 statt 12) für mehr Platz zwischen den Plots
+        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 6), sharey=False)
 
         jitter_scale = 0.08
 
@@ -101,7 +102,7 @@ def server(input, output, session):
         c_muc   = '#27ae60' if sig_muc else '#c0392b'
         label_muc = "SIGNIFIKANT" if sig_muc else "NICHT SIGNIFIKANT"
         ax1.set_title(
-            f"München\u2013Frankfurt\nEffekt: {eff_muc:.1f} Min  |  p = {p_muc:.3f}  \u2192  {label_muc}",
+            f"München\u2013Frankfurt\nEffekt: {eff_muc:.1f} Min | p = {p_muc:.3f} \u2192 {label_muc}",
             color=c_muc, fontweight='bold', fontsize=10
         )
         ax1.set_xticks([1, 2])
@@ -129,7 +130,7 @@ def server(input, output, session):
         c_hb   = '#27ae60' if sig_hb else '#c0392b'
         label_hb = "SIGNIFIKANT" if sig_hb else "NICHT SIGNIFIKANT"
         ax2.set_title(
-            f"Hamburg\u2013Berlin\nEffekt: {eff_hb:.1f} Min  |  p = {p_hb:.3f}  \u2192  {label_hb}",
+            f"Hamburg\u2013Berlin\nEffekt: {eff_hb:.1f} Min | p = {p_hb:.3f} \u2192 {label_hb}",
             color=c_hb, fontweight='bold', fontsize=10
         )
         ax2.set_xticks([1, 2])
@@ -138,7 +139,8 @@ def server(input, output, session):
         ax2.spines['top'].set_visible(False)
         ax2.spines['right'].set_visible(False)
 
-        fig.tight_layout(w_pad=3)
+        # Explizite Abstände statt tight_layout für stabile Darstellung
+        fig.subplots_adjust(wspace=0.35, bottom=0.15, left=0.08, right=0.95)
         return fig
 
     @render.ui
@@ -168,16 +170,16 @@ def server(input, output, session):
 
         return ui.div(
             ui.tags.p(
-                ui.tags.span("München\u2013Frankfurt: ", style="font-weight:bold;"),
+                ui.tags.span("München–Frankfurt: ", style="font-weight:bold;"),
                 ui.tags.span(
-                    f"Effekt {eff_muc:.1f} Min  |  p = {p_muc:.3f}",
+                    f"Effekt {eff_muc:.1f} Min | p = {p_muc:.3f}",
                     style=f"color:{c_muc}; font-weight:bold;"
                 ),
             ),
             ui.tags.p(
-                ui.tags.span("Hamburg\u2013Berlin: ", style="font-weight:bold;"),
+                ui.tags.span("Hamburg–Berlin: ", style="font-weight:bold;"),
                 ui.tags.span(
-                    f"Effekt {eff_hb:.1f} Min  |  p = {p_hb:.3f}",
+                    f"Effekt {eff_hb:.1f} Min | p = {p_hb:.3f}",
                     style=f"color:{c_hb}; font-weight:bold;"
                 ),
             ),
