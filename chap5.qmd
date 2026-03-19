@@ -6,40 +6,47 @@ format: html
 ## Zeit: 15 min | Schwierigkeit: Einsteiger
 
 ### Theorie: Messbar ist nicht gleich wichtig
-Statistische Signifikanz wird oft fälschlicherweise mit praktischer Bedeutsamkeit gleichgesetzt. Die Relevanz einer Maßnahme für die Praxis kann ausschließlich anhand der tatsächlichen Effektgröße beurteilt werden. 
+Statistische Signifikanz wird oft fälschlicherweise mit praktischer Bedeutsamkeit gleichgesetzt. Die Relevanz einer Maßnahme für die Praxis kann ausschließlich anhand der tatsächlichen Effektgröße beurteilt werden.
 
-Ein winziger p Wert bedeutet lediglich, dass ein Effekt mit hoher Sicherheit nicht exakt null ist. Über den echten Nutzen in der realen Welt sagt diese Metrik wenig aus. Cohen beispielsweise kritisierte diese Verwechslung scharf und betonte, dass eine quantitative Wissenschaft ihr primäres Ziel verfehlt, wenn sie Entscheidungen auf p Werte stützt anstatt auf die messbare Größe von Effekten (Cohen, 1990).
+Ein winziger p Wert bedeutet lediglich, dass ein Effekt mit hoher Sicherheit nicht exakt null ist. Über den echten Nutzen in der realen Welt sagt diese Metrik wenig aus. Cohen kritisierte diese Verwechslung scharf und betonte, dass eine quantitative Wissenschaft ihr primäres Ziel verfehlt, wenn sie Entscheidungen auf p Werte stützt anstatt auf die messbare Größe von Effekten (Cohen, 1990).
 
-### Beispiel Deutsche Bahn: Das teure Türsystem
-Die Bahn entwickelt eine neue Türsteuerung für den ICE. Eine gigantische Studie mit hunderttausend Fahrten beweist: Die neuen Türen senken die durchschnittliche Verspätung am Bahnhof "statistisch hochsignifikant". Das Projektteam feiert den winzigen p Wert als enormen Erfolg und präsentieren den niedrigen Wert als beweis, wie praktisch relevant das Projekt ist.
+### Beispiel SmartRail: Das hochsignifikante Nichts
+Die Bahn investiert 180 Millionen Euro in den bundesweiten SmartRail Rollout. Eine gigantische Studie mit 200.000 ICE Fahrten beweist: SmartRail verbessert die Pünktlichkeit statistisch hochsignifikant, p < 0.001. Das Projektteam präsentiert den winzigen p Wert als Beleg für einen enormen Erfolg.
 
-Du betrachtest als Pendler den unstandardisierten Effekt. Die durchschnittliche Verspätung sinkt durch die neuen Türen um exakt 4 Sekunden. Ein statistisch signifikanter, aber extrem kleiner (Und in der Realität irrelevanter) Effekt rechtfertigt jedoch keine teuren Interventionen in der Praxis. Die praktische Bedeutsamkeit für deinen Alltag ist null, Die notwendigen Investitionen an anderer Stelle besser investiert.
+Du schaust als Pendler auf den unstandardisierten Effekt: SmartRail spart dir im Schnitt 4 Sekunden pro Fahrt. Der Anschlusszug fährt weiter pünktlich ohne dich ab. Die Investition war statistisch gesehen ein Triumph, praktisch gesehen ein teures Nichts. Die Frage ist nicht "Ist der Effekt von null verschieden?" sondern "Ist der Effekt groß genug, um die Kosten zu rechtfertigen?"
 
 ### Deine Aufgabe
-Die Applikation visualisiert das Konzept der Relevanzgrenze. Du definierst selbst, wann ein Zeitgewinn für dich als Fahrgast eine echte praktische Bedeutsamkeit erreicht.
+Die Applikation visualisiert die Lücke zwischen Signifikanz und Bedeutsamkeit. Du legst selbst fest, ab wann ein Zeitgewinn für dich als Pendler praktisch relevant ist. Der Investitionsrechner zeigt, wie viel die Bahn pro eingesparter Stunde ausgibt.
 
-1. **Beobachten:** Bei den Startwerten bewirkt das Projekt eine extrem kleine Verbesserung von 4 Sekunden. Das Projekt verfehlt deine Relevanzschwelle massiv und wird als irrelevant rot markiert.
-2. **Schwellenwert definieren:** Ab wann ist ein Zeitgewinn für dich im Alltag relevant? Setze die Schwelle für praktische Relevanz auf 300 Sekunden.
-3. **Bewerten:** Verändere den gemessenen Effekt der Studie mit dem oberen Regler. Nur wenn der tatsächliche Effekt deine definierte Schwelle überschreitet, färbt sich der Balken grün. Erst dann besitzt die statistische Signifikanz eine reale praktische Bedeutsamkeit.
+1. **Beobachten:** Bei den Startwerten spart SmartRail 4 Sekunden pro Fahrt. Das Projekt verfehlt deine Relevanzschwelle massiv und kostet die Bahn unverhältnismäßig viel pro eingesparter Stunde.
+2. **Schwellenwert setzen:** Definiere deine persönliche Grenze: Ab wie vielen Sekunden Zeitgewinn ist ein Projekt für dich im Alltag relevant? Setze die Schwelle auf 120 Sekunden (2 Minuten).
+3. **Effekt verändern:** Erhöhe den gemessenen Effekt mit dem oberen Regler. Beobachte, wann der Balken grün wird und wie sich der Investitionsrechner verändert. Wie viele Sekunden braucht SmartRail, um sein Geld zu rechtfertigen?
 
 ```{shinylive-python}
 #| standalone: true
-#| viewerHeight: 650
+#| viewerHeight: 720
 
 from shiny import App, render, ui
 import matplotlib.pyplot as plt
 
+INVESTITION_MIO = 180     # Millionen Euro
+FAHRTEN_JAHR    = 500_000 # Fahrten pro Jahr
+JAHRE           = 10      # Nutzungsdauer
+
 app_ui = ui.page_fluid(
     ui.card(
-        ui.card_header("Bewertung: Signifikanz vs Praktische Relevanz"),
+        ui.card_header("SmartRail: Signifikanz vs. Praktische Bedeutsamkeit"),
         ui.layout_columns(
             ui.div(
                 ui.h5("Studienergebnis"),
-                ui.input_slider("eff_mess", "Gemessener Effekt (Sekunden)", 1, 600, 4),
+                ui.input_slider("eff_sek", "Gemessener Zeitgewinn (Sekunden/Fahrt)", 1, 600, 4),
+                ui.tags.p("Studie: p < 0.001, statistisch hochsignifikant.",
+                          style="font-size:12px; color:#7f8c8d;"),
                 ui.hr(),
-                ui.h5("Deine persönliche Grenze"),
-                ui.input_slider("eff_rel", "Schwelle für praktische Relevanz (Sekunden)", 10, 600, 300),
-                ui.p("Hinweis: Der gemessene Effekt ist laut Studie statistisch hochsignifikant p < 0.001."),
+                ui.h5("Deine Relevanzschwelle"),
+                ui.input_slider("schwelle", "Ab wann ist es dir relevant? (Sekunden)", 10, 600, 120),
+                ui.hr(),
+                ui.output_ui("invest_panel"),
             ),
             ui.output_plot("relevanz_plot"),
             col_widths=(4, 8)
@@ -48,33 +55,80 @@ app_ui = ui.page_fluid(
 )
 
 def server(input, output, session):
+
     @render.plot
     def relevanz_plot():
-        eff_mess = input.eff_mess()
-        eff_rel = input.eff_rel()
-        
+        eff      = input.eff_sek()
+        schwelle = input.schwelle()
+
+        is_relevant = eff >= schwelle
+        bar_color   = '#27ae60' if is_relevant else '#c0392b'
+
         fig, ax = plt.subplots(figsize=(10, 6))
-        
-        is_relevant = eff_mess >= eff_rel
-        bar_color = '#27ae60' if is_relevant else '#c0392b'
-        
-        ax.bar(["Gemessener Zeitgewinn"], [eff_mess], color=bar_color, width=0.4)
-        
-        ax.axhline(eff_rel, color='#34495e', linestyle='dotted', linewidth=2.5)
-        ax.text(0.25, eff_rel + 10, f'Relevanzschwelle: {eff_rel} Sekunden', color='#34495e', fontweight='bold', fontsize=11)
-        
-        ax.set_ylim(0, 700)
-        ax.set_ylabel("Zeitgewinn in Sekunden")
-        
-        status_text = "Praktisch relevant" if is_relevant else "Praktisch irrelevant"
-        ax.set_title(f"Bewertung: Hochsignifikant, aber {status_text.lower()}", fontweight='bold')
-        
+
+        ax.barh(["Gemessener\nZeitgewinn"], [eff], color=bar_color, height=0.35, alpha=0.85)
+        ax.axvline(schwelle, color='#2c3e50', linestyle='dotted', linewidth=2.5)
+
+        ax.text(schwelle + 8, 0, f'Deine Schwelle:\n{schwelle} Sek',
+                va='center', fontweight='bold', fontsize=10, color='#2c3e50')
+
+        ax.set_xlim(0, max(schwelle * 1.6, eff * 1.4, 50))
+        ax.set_xlabel("Zeitgewinn in Sekunden pro Fahrt")
+
+        status = "Praktisch relevant" if is_relevant else "Praktisch irrelevant"
+        status_color = '#27ae60' if is_relevant else '#c0392b'
+        ax.set_title(f"Hochsignifikant, aber: {status}",
+                     fontweight='bold', color=status_color, fontsize=13)
+
+        # Annotation: was bedeutet der Effekt in Minuten?
+        eff_min = eff / 60
+        ax.text(eff / 2 if eff > 30 else eff + 5,
+                -0.28, f'{eff_min:.2f} Min = {eff} Sek',
+                ha='center', va='top', fontsize=10, color='#7f8c8d')
+
         ax.spines['top'].set_visible(False)
         ax.spines['right'].set_visible(False)
-        ax.spines['bottom'].set_visible(False)
-        ax.set_xticks([])
-        
+        ax.spines['left'].set_visible(False)
+        ax.set_yticks([])
+
         return fig
+
+    @render.ui
+    def invest_panel():
+        eff_sek = input.eff_sek()
+
+        # Gesamteingesparte Zeit über Nutzungsdauer
+        sek_gesamt   = eff_sek * FAHRTEN_JAHR * JAHRE
+        stunden_ges  = sek_gesamt / 3600
+        invest_eur   = INVESTITION_MIO * 1_000_000
+
+        kosten_pro_h = invest_eur / stunden_ges if stunden_ges > 0 else float('inf')
+        kosten_str   = (f"{kosten_pro_h:,.0f} €" if kosten_pro_h < 1_000_000
+                        else f"{kosten_pro_h/1_000_000:.1f} Mio €")
+
+        return ui.div(
+            ui.tags.p("Investitionsrechner",
+                      style="font-weight:bold; font-size:13px; margin-bottom:6px;"),
+            ui.tags.p(
+                ui.tags.span(f"{eff_sek} Sek/Fahrt × {FAHRTEN_JAHR:,} Fahrten/Jahr × {JAHRE} Jahre",
+                             style="font-size:11px; color:#7f8c8d;"),
+            ),
+            ui.tags.p(
+                ui.tags.span(f"= {stunden_ges:,.0f} Stunden ",
+                             style="font-weight:bold; font-size:14px;"),
+                "eingesparte Zeit gesamt",
+            ),
+            ui.tags.p(
+                ui.tags.span(f"{INVESTITION_MIO} Mio € ÷ {stunden_ges:,.0f} h",
+                             style="font-size:11px; color:#7f8c8d;"),
+            ),
+            ui.tags.p(
+                ui.tags.span(f"= {kosten_str} ",
+                             style="font-weight:bold; font-size:15px; color:#c0392b;"),
+                "pro eingesparter Stunde",
+            ),
+            style="background:#f8f9fa; padding:12px; border-radius:8px; margin-top:8px;"
+        )
 
 app = App(app_ui, server)
 ```
