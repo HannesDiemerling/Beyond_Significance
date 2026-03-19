@@ -10,82 +10,135 @@ Der p Wert ist eine rein inferenzstatistische Größe. Er berechnet sich aus dem
 
 Das mathematische Problem lautet wie folgt. Der Standardfehler schrumpft automatisch, wenn du die Stichprobengröße erhöhst. Bei einer gigantischen Datenmenge wird der Standardfehler extrem klein. In der Folge wird fast jeder noch so triviale und praktisch irrelevante Unterschied statistisch signifikant (Lin et al., 2013). Die Signifikanz testet primär deine Stichprobengröße, nicht die Wichtigkeit.
 
-### Beispiel Deutsche Bahn: Der irrelevante Rekord
-Du vergleichst die Pünktlichkeit der ICE Baureihe drei und Baureihe vier. Die wahre durchschnittliche Verspätung unterscheidet sich um exakt 12 Sekunden. Für dich als Pendler ist dieser Unterschied völlig irrelevant. Dein Frust am Bahnsteig bleibt in beiden fällen gleich.
+### Beispiel SmartRail: Der irrelevante Rekord
+Die Deutsche Bahn wertet die SmartRail Daten aus. Das System verbessert die Pünktlichkeit der ICE Züge um exakt 12 Sekunden im Durchschnitt. Für dich als Pendler ist dieser Unterschied im Alltag unsichtbar. Er verpasst deinen Anschlusszug genauso wie vorher.
 
-Misst du nun die Verspätung von jeweils 20 Zügen, liefert der statistische Test ein nicht signifikantes Ergebnis. Sammelst du jedoch systematisch die Daten von 5000 Zügen beider Baureihen, schrumpft der Standardfehler massiv. Der p Wert fällt unter die magische Schwelle. Die Statistik meldet plötzlich einen hochsignifikanten Unterschied. Die Versuchung ist groß, dies als technischen Durchbruch zu feiern. In der Realität wartest du immer noch exakt 12 Sekunden länger. Die statistische Signifikanz verdeckt die praktische Irrelevanz.
+Misst du nun die Verspätung von jeweils 20 ICE Zügen, liefert der statistische Test ein nicht signifikantes Ergebnis. Sammelst du jedoch systematisch die Daten von 5000 Fahrten, schrumpft der Standardfehler massiv. Der p Wert fällt unter die magische Schwelle. Die Statistik meldet plötzlich einen hochsignifikanten Unterschied. Die Versuchung ist groß, dies als technischen Durchbruch zu feiern. In der Realität verpasst du deinen Anschlusszug weiterhin genauso oft. Die statistische Signifikanz verdeckt die praktische Irrelevanz.
 
 ### Deine Aufgabe
-Die App simuliert diesen Vergleich. Der wahre Unterschied in der Verspätung bleibt unverrückbar bei 12 Sekunden (0.2 Minuten). Die natürliche Schwankung der Verspätung liegt bei 3 Minuten.
+Die Applikation zeigt dir links die Veränderung des p Wertes mit steigender Datenmenge. Rechts siehst du die gemessenen Mittelwerte beider Gruppen mit ihren Konfidenzintervallen.
 
-1. **Beobachten:** Belasse den Regler bei wenigen Zügen. Der p Wert ist groß. Das Ergebnis ist statistisch nicht signifikant.
-2. **Datenflut simulieren:** Erhöhe die Anzahl der beobachteten Züge kontinuierlich. Beobachte die blaue Kurve.
-3. **Die Schwelle durchbrechen:** Finde den Punkt, an dem der p Wert die Signifikanzschwelle von 0.05 nach unten durchbricht. Du hast nun ein signifikantes Ergebnis erzeugt, ohne dass sich die Züge auch nur eine Sekunde pünktlicher bewegen.
+1. **Beobachten:** Belasse den Regler bei wenigen ICE Zügen. Der p Wert ist groß, das Ergebnis nicht signifikant. Die Konfidenzintervalle überlappen stark.
+2. **Datenflut simulieren:** Erhöhe die Anzahl der gemessenen Züge kontinuierlich. Beobachte: Der p Wert sinkt, die Konfidenzintervalle werden schmaler.
+3. **Das Entscheidende erkennen:** Die Balken selbst bewegen sich nicht. Der Effekt bleibt konstant bei 12 Sekunden. Nur unsere Messgenauigkeit steigt. Signifikanz bedeutet hier ausschließlich: "Wir haben genug Daten gesammelt, um eine winzige Differenz nachzuweisen."
 
 ```{shinylive-python}
 #| standalone: true
-#| viewerHeight: 650
+#| viewerHeight: 700
 
 from shiny import App, render, ui
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy.stats import t
+from scipy.stats import t as t_dist
+
+DIFF = 0.2   # 12 Sekunden in Minuten
+SD   = 3.0
+MEAN_OLD = 12.5
+MEAN_NEW = MEAN_OLD - DIFF
+
+def compute_p(n):
+    se = SD * np.sqrt(2.0 / n)
+    t_stat = DIFF / se
+    df = 2 * n - 2
+    return t_dist.sf(np.abs(t_stat), df) * 2
 
 app_ui = ui.page_fluid(
     ui.card(
-        ui.card_header("Simulation: Signifikanz durch bloße Masse"),
+        ui.card_header("SmartRail: Signifikanz durch Datenmasse"),
         ui.layout_columns(
             ui.div(
-                ui.h5("Datensammlung steuern"),
-                ui.input_slider("n_trains", "Anzahl Züge pro Baureihe", 10, 5000, 50, step=50),
+                ui.h5("Datenerhebung steuern"),
+                ui.input_slider("n_trains", "Anzahl gemessener ICE pro Gruppe", 10, 5000, 50, step=50),
                 ui.hr(),
-                ui.p("Wahrer Unterschied: Baureihe vier ist konstant 12 Sekunden später. Die Schwankung liegt bei 3 Minuten."),
+                ui.output_ui("stats_panel"),
             ),
-            ui.output_plot("p_plot"),
+            ui.output_plot("dual_plot"),
             col_widths=(4, 8)
         )
     )
 )
 
 def server(input, output, session):
+
     @render.plot
-    def p_plot():
+    def dual_plot():
         n = input.n_trains()
-        
-        diff = 0.2 
-        sd = 3.0
-        
-        se = sd * np.sqrt(2.0 / n)
-        t_stat = diff / se
-        df = 2 * n - 2
-        
-        p_val = t.sf(np.abs(t_stat), df) * 2
-        
-        fig, ax = plt.subplots(figsize=(10, 6))
-        
-        n_vals = np.linspace(10, 5000, 200)
-        se_vals = sd * np.sqrt(2.0 / n_vals)
-        t_vals = diff / se_vals
-        p_vals = t.sf(np.abs(t_vals), 2 * n_vals - 2) * 2
-        
-        ax.plot(n_vals, p_vals, color='#34495e', linewidth=2, label='Verlauf des p Wertes')
-        
-        color = '#e74c3c' if p_val < 0.05 else '#2980b9'
-        ax.scatter([n], [p_val], color=color, s=150, zorder=5, label=f'Aktueller p Wert: {p_val:.3f}')
-        
-        ax.axhline(0.05, color='#e74c3c', linestyle='dotted', linewidth=2, label='Signifikanzschwelle (0.05)')
-        
-        ax.set_title("Der p Wert schrumpft isoliert durch die Stichprobengröße")
-        ax.set_xlabel("Anzahl beobachteter Züge pro Baureihe")
-        ax.set_ylabel("p Wert")
-        ax.set_ylim(-0.05, 1.0)
-        ax.set_xlim(0, 5000)
-        ax.legend(loc="upper right")
-        
-        ax.spines['top'].set_visible(False)
-        ax.spines['right'].set_visible(False)
-        
+        p_val = compute_p(n)
+
+        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 6))
+
+        # Linkes Panel: p-Wert-Kurve
+        n_vals = np.linspace(10, 5000, 400)
+        se_vals = SD * np.sqrt(2.0 / n_vals)
+        t_vals  = DIFF / se_vals
+        p_vals  = t_dist.sf(np.abs(t_vals), 2 * n_vals - 2) * 2
+
+        ax1.plot(n_vals, p_vals, color='#34495e', linewidth=2, label='Verlauf des p Wertes')
+        pt_color = '#e74c3c' if p_val < 0.05 else '#2980b9'
+        ax1.scatter([n], [p_val], color=pt_color, s=150, zorder=5,
+                    label=f'Aktuell: p = {p_val:.4f}')
+        ax1.axhline(0.05, color='#e74c3c', linestyle='dotted', linewidth=2,
+                    label='Signifikanzschwelle (0.05)')
+        ax1.set_xlabel("Anzahl gemessener ICE pro Gruppe")
+        ax1.set_ylabel("p Wert")
+        ax1.set_title("p Wert schrumpft mit der Stichprobengröße", fontsize=11)
+        ax1.set_ylim(-0.02, 1.0)
+        ax1.set_xlim(0, 5000)
+        ax1.legend(loc='upper right', fontsize=9)
+        ax1.spines['top'].set_visible(False)
+        ax1.spines['right'].set_visible(False)
+
+        # Rechtes Panel: Mittelwerte mit Konfidenzintervall
+        ci = 1.96 * SD / np.sqrt(n)
+        means  = [MEAN_OLD, MEAN_NEW]
+        labels = ['Altes System', 'SmartRail']
+        colors = ['#95a5a6', '#3498db']
+        x_pos  = [1, 2]
+
+        bars = ax2.bar(x_pos, means, color=colors, alpha=0.75, width=0.4)
+        ax2.errorbar(x_pos, means, yerr=[ci, ci],
+                     color='#2c3e50', linewidth=2.5, capsize=10, fmt='none')
+
+        ymin = min(means) - 4 * ci - 0.3
+        ymax = max(means) + 4 * ci + 0.3
+        ax2.set_ylim(max(0, ymin), ymax)
+        ax2.set_xticks(x_pos)
+        ax2.set_xticklabels(labels, fontsize=11)
+        ax2.set_ylabel("Durchschnittliche Verspätung (Minuten)")
+        ax2.set_title(
+            f"Effekt: {DIFF*60:.0f} Sek = {DIFF:.1f} Min  |  95% KI: ±{ci:.2f} Min",
+            fontsize=11
+        )
+        ax2.spines['top'].set_visible(False)
+        ax2.spines['right'].set_visible(False)
+
+        fig.tight_layout(w_pad=3)
         return fig
+
+    @render.ui
+    def stats_panel():
+        n = input.n_trains()
+        p_val = compute_p(n)
+        is_sig = p_val < 0.05
+        status_color = "#27ae60" if is_sig else "#2980b9"
+        status_text  = "SIGNIFIKANT" if is_sig else "NICHT SIGNIFIKANT"
+
+        ci = 1.96 * SD / np.sqrt(n)
+
+        return ui.div(
+            ui.tags.p(
+                ui.tags.span("Status: ", style="font-weight:bold;"),
+                ui.tags.span(status_text, style=f"color:{status_color}; font-weight:bold;"),
+            ),
+            ui.tags.p(f"p = {p_val:.4f}", style="font-weight:bold; margin:2px 0;"),
+            ui.tags.p(f"95% KI: ±{ci:.2f} Minuten", style="margin:2px 0;"),
+            ui.tags.hr(style="margin:8px 0;"),
+            ui.tags.p(
+                "Wahrer Effekt: konstant 12 Sekunden.",
+                style="font-size:12px; color:#7f8c8d;"
+            ),
+            style="background:#f8f9fa; padding:12px; border-radius:8px; margin-top:8px;"
+        )
 
 app = App(app_ui, server)
 ```
