@@ -6,87 +6,137 @@ format: html
 ## Zeit: 15 min | Schwierigkeit: Einsteiger
 
 ### Theorie: Die Illusion der harten Grenze
-Der p Wert ist die am häufigsten missverstandene Metrik der modernen Wissenschaft. Er liefert explizit keine Antworten auf die eigentlichen Kernfragen der Forschung. Er sagt dir weder, ob ein Effekt in der Realität wahr ist, noch wie wahrscheinlich es ist, dass dein Ergebnis bei einer Wiederholung der Studie identisch ausfällt. 
+Der p Wert ist die am häufigsten missverstandene Metrik der modernen Wissenschaft. Er liefert explizit keine Antworten auf die eigentlichen Kernfragen der Forschung. Er sagt dir weder, ob ein Effekt in der Realität wahr ist, noch wie wahrscheinlich es ist, dass dein Ergebnis bei einer Wiederholung der Studie identisch ausfällt.
 
 Besonders gefährlich ist die etablierte Praxis, eine starre Signifikanzschwelle (meist 0.05) zu definieren. Die Natur zieht keine magische Grenze zwischen 0.049 und 0.051. Ein solcher Schwellenwert erzwingt unlogische, rein binäre Entscheidungen (Gigerenzer, 2004). Er überlagert den Blick auf die echten Daten und verführt dazu, messbare Nuancen in ein extremes "Erfolg" oder "Misserfolg" Schema zu pressen.
 
-### Beispiel Deutsche Bahn: Der eine Zug
-Die Bahn testet ein neues Boarding Verfahren an zwei verschiedenen Bahnhöfen. In Studie A reduziert das Verfahren die Wartezeit leicht. Der berechnete p Wert liegt bei 0.049. Das Projektteam meldet einen hochoffiziellen, signifikanten Erfolg und fordert Millionen für den Rollout.
+### Beispiel SmartRail: Zwei Bahnhöfe, ein Koffer
+Die Deutsche Bahn testet ihr neues digitales Leitsystem "SmartRail" parallel an zwei Bahnhöfen. Am München Hbf misst das Projektteam die Verspätung von je 20 ICE Zügen mit und ohne SmartRail. Die Daten zeigen eine leichte Verbesserung. Der p Wert liegt bei 0.049. Das Münchner Team meldet einen signifikanten Erfolg und empfiehlt den bundesweiten Rollout.
 
-In Studie B, am anderen Bahnhof, wird das selbe Verfahren getestet. Die Daten sehen visuell absolut identisch aus. Nur ein einziger Zug hatte durch einen Passagier eine kleine Verzögerung. Der p Wert rutscht auf 0.051. Die interne Software meldet ein nicht signifikantes Ergebnis. Studie B wird als völliger Misserfolg abgestempelt und in der Schublade versteckt. Zwei praktisch identische Studien werden durch das binäre Denken komplett konträr bewertet und führen zu unsinnigen schlusfolgerungen.
+Am Berlin Hbf wird der identische Test durchgeführt. Die Messdaten sehen visuell identisch aus. Ein einziger ICE hatte am Morgen eine kleine Zusatzverzögerung, ein Fahrgast blockierte beim Einsteigen kurz die Tür mit einem Koffer. Der p Wert rutscht auf 0.051. Die Software meldet ein nicht signifikantes Ergebnis. Das Berliner Team stuft SmartRail als wirkungslos ein und archiviert den Test.
+
+Zwei praktisch identische Datensätze. Zwei konträre Entscheidungen. Die Sekunden eines einzigen Koffers entscheiden über Millionen.
 
 ### Deine Aufgabe
-Die Applikation zeigt dir die Rohdaten einer solchen Auswertung als Streudiagramm. Das alte System wird mit dem neuen Verfahren verglichen. 
+Die Applikation zeigt dir beide Bahnhöfe nebeneinander. Links München mit dem fixierten Ergebnis, rechts Berlin mit einem einzelnen manipulierbaren ICE.
 
-1. **Beobachten:** Du siehst die Verspätungen der einzelnen Züge. Das neue System (blau) scheint etwas besser zu sein. Der p Wert liegt knapp unter 0.05. Das Urteil leuchtet grün: Signifikant.
-2. **Minimal manipulieren:** Greife dir den roten manipulierbaren Zug im neuen System. Schiebe seine Verspätung mit dem Regler um den Bruchteil einer Minute nach oben. 
-3. **Das Absurde erkennen:** Die visuelle Verteilung der Daten verändert sich für das menschliche Auge praktisch überhaupt nicht. Dennoch springt der p Wert über die Schwelle von 0.05. Das Urteil kippt sofort auf rot. Ein Millionenprojekt scheitert statistisch an den Sekunden eines einzigen Koffers.
+1. **Vergleichen:** Beide Datensätze verwenden identische Ausgangsdaten. München und Berlin zeigen zunächst das gleiche Ergebnis.
+2. **Minimal manipulieren:** Verschiebe die Verspätung des roten ICE am Berlin Hbf um wenige Zehntel Minuten nach oben. Beobachte im Infofeld, wie sich die p Werte verändern.
+3. **Das Absurde erkennen:** Die Daten verändern sich visuell kaum. Dennoch kippt Berlins Urteil auf rot, während München weiter grün leuchtet. Identische Realität, gegensätzliche Schlussfolgerungen, ausgelöst durch die Sekunden eines einzigen Koffers.
 
 ```{shinylive-python}
 #| standalone: true
-#| viewerHeight: 650
+#| viewerHeight: 700
 
 from shiny import App, render, ui
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.stats import ttest_ind
 
+np.random.seed(42)
+old_system = np.random.normal(12.5, 2.5, 20)
+smartrail_base = np.random.normal(10.5, 2.5, 19)
+jitter_old = np.random.normal(1, 0.04, 20)
+jitter_new = np.random.normal(2, 0.04, 19)
+
 app_ui = ui.page_fluid(
     ui.card(
-        ui.card_header("Binäres Denken: Der p Wert Kipppunkt"),
+        ui.card_header("SmartRail: Zwei Bahnhöfe, ein System, zwei Urteile"),
         ui.layout_columns(
             ui.div(
-                ui.h5("Daten minimal manipulieren"),
-                ui.input_slider("outlier", "Verspätung des roten Zuges", 8.0, 14.0, 9.8, step=0.1),
+                ui.h5("Berlin Hbf: Einen ICE manipulieren"),
+                ui.input_slider("outlier", "Verspätung des markierten ICE (Minuten)", 8.0, 14.0, 9.8, step=0.1),
                 ui.hr(),
-                ui.p("Bewege den Regler minimal um 0.05 zu überschreiten. Das statistische Urteil kippt komplett, obwohl die Daten visuell fast identisch bleiben."),
+                ui.output_ui("verdict_panel"),
             ),
-            ui.output_plot("scatter_plot"),
+            ui.output_plot("dual_scatter"),
             col_widths=(4, 8)
         )
     )
 )
 
 def server(input, output, session):
+
+    def compute_p(outlier_val):
+        group = np.append(smartrail_base, outlier_val)
+        _, p = ttest_ind(old_system, group)
+        return p
+
     @render.plot
-    def scatter_plot():
-        np.random.seed(42)
-        group_a = np.random.normal(12.5, 2.5, 20)
-        group_b = np.random.normal(10.5, 2.5, 19)
-        
+    def dual_scatter():
         val = input.outlier()
-        group_b_full = np.append(group_b, val)
-        
-        t_stat, p_val = ttest_ind(group_a, group_b_full)
-        
-        fig, ax = plt.subplots(figsize=(10, 6))
-        
-        x_a = np.random.normal(1, 0.04, len(group_a))
-        x_b = np.random.normal(2, 0.04, len(group_b_full)-1)
-        x_outlier = 2.0
-        
-        ax.scatter(x_a, group_a, color='#7f8c8d', alpha=0.7, s=100, label='Altes System')
-        ax.scatter(x_b, group_b, color='#3498db', alpha=0.7, s=100, label='Neues Verfahren')
-        ax.scatter([x_outlier], [val], color='#e74c3c', s=200, zorder=5, label='Manipulierter Zug')
-        
-        ax.set_xticks([1, 2])
-        ax.set_xticklabels(['Altes System', 'Neues Verfahren'], fontsize=12)
-        ax.set_xlim(0.5, 2.5)
-        ax.set_ylim(4, 20)
-        ax.set_ylabel("Verspätung in Minuten")
-        
-        is_sig = p_val < 0.05
-        title_color = '#27ae60' if is_sig else '#c0392b'
-        status = "SIGNIFIKANT (Erfolg!)" if is_sig else "NICHT SIGNIFIKANT (Misserfolg!)"
-        
-        ax.set_title(f"p Wert: {p_val:.3f}  |  Urteil: {status}", color=title_color, fontweight='bold', fontsize=14)
-        ax.axhline(val, color='#e74c3c', linestyle='dotted', alpha=0.3)
-        
-        ax.spines['top'].set_visible(False)
-        ax.spines['right'].set_visible(False)
-        ax.legend(loc='upper right')
-        
+        p_muc = compute_p(9.8)
+        p_ber = compute_p(val)
+
+        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 6), sharey=True)
+
+        # München Hbf (fixiert)
+        ax1.scatter(jitter_old, old_system, color='#95a5a6', alpha=0.7, s=80)
+        ax1.scatter(jitter_new, smartrail_base, color='#3498db', alpha=0.7, s=80)
+        ax1.scatter([2.0], [9.8], color='#3498db', alpha=0.7, s=80)
+
+        sig_muc = p_muc < 0.05
+        c_muc = '#27ae60' if sig_muc else '#c0392b'
+        s_muc = "SIGNIFIKANT" if sig_muc else "NICHT SIGNIFIKANT"
+        ax1.set_title(f"München Hbf\np = {p_muc:.4f}  →  {s_muc}", color=c_muc, fontweight='bold', fontsize=11)
+        ax1.set_xticks([1, 2])
+        ax1.set_xticklabels(['Altes System', 'SmartRail'], fontsize=10)
+        ax1.set_ylabel("Verspätung in Minuten")
+
+        # Berlin Hbf (manipulierbar)
+        ax2.scatter(jitter_old, old_system, color='#95a5a6', alpha=0.7, s=80)
+        ax2.scatter(jitter_new, smartrail_base, color='#3498db', alpha=0.7, s=80)
+        ax2.scatter([2.0], [val], color='#e74c3c', s=200, zorder=5,
+                    edgecolors='#c0392b', linewidth=2)
+
+        sig_ber = p_ber < 0.05
+        c_ber = '#27ae60' if sig_ber else '#c0392b'
+        s_ber = "SIGNIFIKANT" if sig_ber else "NICHT SIGNIFIKANT"
+        ax2.set_title(f"Berlin Hbf\np = {p_ber:.4f}  →  {s_ber}", color=c_ber, fontweight='bold', fontsize=11)
+        ax2.set_xticks([1, 2])
+        ax2.set_xticklabels(['Altes System', 'SmartRail'], fontsize=10)
+
+        for ax in [ax1, ax2]:
+            ax.set_xlim(0.5, 2.5)
+            ax.set_ylim(4, 20)
+            ax.spines['top'].set_visible(False)
+            ax.spines['right'].set_visible(False)
+
+        fig.tight_layout(w_pad=3)
         return fig
+
+    @render.ui
+    def verdict_panel():
+        val = input.outlier()
+        p_muc = compute_p(9.8)
+        p_ber = compute_p(val)
+
+        diff_minutes = abs(val - 9.8)
+        same_verdict = (p_muc < 0.05) == (p_ber < 0.05)
+
+        muc_color = "#27ae60" if p_muc < 0.05 else "#c0392b"
+        ber_color = "#27ae60" if p_ber < 0.05 else "#c0392b"
+
+        if same_verdict:
+            msg = "Beide Bahnhöfe kommen zum selben Urteil."
+            msg_color = "#27ae60"
+        else:
+            msg = f"Gegensätzliche Urteile! {diff_minutes:.1f} Minuten bei einem einzigen ICE kippen die Entscheidung über das gesamte Projekt."
+            msg_color = "#c0392b"
+
+        return ui.div(
+            ui.tags.p(
+                ui.tags.span("München: ", style="font-weight:bold;"),
+                ui.tags.span(f"p = {p_muc:.4f}", style=f"color:{muc_color}; font-weight:bold;"),
+            ),
+            ui.tags.p(
+                ui.tags.span("Berlin: ", style="font-weight:bold;"),
+                ui.tags.span(f"p = {p_ber:.4f}", style=f"color:{ber_color}; font-weight:bold;"),
+            ),
+            ui.tags.hr(style="margin:8px 0;"),
+            ui.tags.p(msg, style=f"color:{msg_color}; font-weight:bold; font-size:13px;"),
+            style="background:#f8f9fa; padding:12px; border-radius:8px; margin-top:8px;"
+        )
 
 app = App(app_ui, server)
 ```
