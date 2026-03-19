@@ -79,9 +79,12 @@ def server(input, output, session):
 
         _, p_muc = ttest_ind(old_muc, new_muc)
         _, p_hb  = ttest_ind(old_hb,  new_hb)
+        
+        eff_muc = np.mean(old_muc) - np.mean(new_muc)
+        eff_hb  = np.mean(old_hb)  - np.mean(new_hb)
 
-        # Erhöhte Breite (14 statt 12) für mehr Platz zwischen den Plots
-        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 6), sharey=False)
+        # Größeres Format für mehr Stabilität
+        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 7))
 
         jitter_scale = 0.08
 
@@ -90,57 +93,52 @@ def server(input, output, session):
         jx_old = np.random.uniform(-jitter_scale, jitter_scale, N)
         jx_new = np.random.uniform(-jitter_scale, jitter_scale, N)
 
-        ax1.scatter(1 + jx_old, old_muc, color='#95a5a6', alpha=0.65, s=60, label='Altes System')
-        ax1.scatter(2 + jx_new, new_muc, color='#3498db', alpha=0.65, s=60, label='SmartRail')
-        ax1.plot([1, 2], [np.mean(old_muc), np.mean(new_muc)],
-                 color='#2c3e50', linewidth=2, linestyle='--', zorder=5)
-        ax1.scatter([1, 2], [np.mean(old_muc), np.mean(new_muc)],
-                    color='#2c3e50', s=100, zorder=6)
+        ax1.scatter(1 + jx_old, old_muc, color='#95a5a6', alpha=0.6, s=50, label='Alt')
+        ax1.scatter(2 + jx_new, new_muc, color='#3498db', alpha=0.6, s=50, label='SmartRail')
+        ax1.plot([1, 2], [np.mean(old_muc), np.mean(new_muc)], color='#2c3e50', linewidth=2, linestyle='--')
+        ax1.scatter([1, 2], [np.mean(old_muc), np.mean(new_muc)], color='#2c3e50', s=100, zorder=6)
 
-        eff_muc = np.mean(old_muc) - np.mean(new_muc)
         sig_muc = p_muc < 0.05
-        c_muc   = '#27ae60' if sig_muc else '#c0392b'
-        label_muc = "SIGNIFIKANT" if sig_muc else "NICHT SIGNIFIKANT"
-        ax1.set_title(
-            f"München\u2013Frankfurt\nEffekt: {eff_muc:.1f} Min | p = {p_muc:.3f} \u2192 {label_muc}",
-            color=c_muc, fontweight='bold', fontsize=10
-        )
+        label_muc = "SIGNIFIKANT" if sig_muc else "NICHT SIG."
+        ax1.set_title(f"München – Frankfurt\n({label_muc})", 
+                      color=('#27ae60' if sig_muc else '#c0392b'), 
+                      fontweight='bold', fontsize=12, pad=15)
+        
+        # Details in xlabel statt Titel zur Vermeidung von Überlappung
+        ax1.set_xlabel(f"Effekt: {eff_muc:.1f} Min | p = {p_muc:.3f}", fontsize=10, labelpad=10)
         ax1.set_xticks([1, 2])
-        ax1.set_xticklabels(['Altes System', 'SmartRail'], fontsize=10)
+        ax1.set_xticklabels(['Altes System', 'SmartRail'], fontsize=9)
         ax1.set_ylabel("Verspätung in Minuten")
-        ax1.set_ylim(0, 24)
+        ax1.set_ylim(0, 26)
         ax1.spines['top'].set_visible(False)
         ax1.spines['right'].set_visible(False)
-        ax1.legend(loc='upper right', fontsize=9)
 
         # ---- Hamburg–Berlin (variable Streuung) ----
         np.random.seed(88)
         jx_old2 = np.random.uniform(-jitter_scale, jitter_scale, N)
         jx_new2 = np.random.uniform(-jitter_scale, jitter_scale, N)
 
-        ax2.scatter(1 + jx_old2, old_hb, color='#95a5a6', alpha=0.65, s=60)
-        ax2.scatter(2 + jx_new2, new_hb, color='#3498db', alpha=0.65, s=60)
-        ax2.plot([1, 2], [np.mean(old_hb), np.mean(new_hb)],
-                 color='#2c3e50', linewidth=2, linestyle='--', zorder=5)
-        ax2.scatter([1, 2], [np.mean(old_hb), np.mean(new_hb)],
-                    color='#2c3e50', s=100, zorder=6)
+        ax2.scatter(1 + jx_old2, old_hb, color='#95a5a6', alpha=0.6, s=50)
+        ax2.scatter(2 + jx_new2, new_hb, color='#3498db', alpha=0.6, s=50)
+        ax2.plot([1, 2], [np.mean(old_hb), np.mean(new_hb)], color='#2c3e50', linewidth=2, linestyle='--')
+        ax2.scatter([1, 2], [np.mean(old_hb), np.mean(new_hb)], color='#2c3e50', s=100, zorder=6)
 
-        eff_hb = np.mean(old_hb) - np.mean(new_hb)
         sig_hb = p_hb < 0.05
-        c_hb   = '#27ae60' if sig_hb else '#c0392b'
-        label_hb = "SIGNIFIKANT" if sig_hb else "NICHT SIGNIFIKANT"
-        ax2.set_title(
-            f"Hamburg\u2013Berlin\nEffekt: {eff_hb:.1f} Min | p = {p_hb:.3f} \u2192 {label_hb}",
-            color=c_hb, fontweight='bold', fontsize=10
-        )
+        label_hb = "SIGNIFIKANT" if sig_hb else "NICHT SIG."
+        ax2.set_title(f"Hamburg – Berlin\n({label_hb})", 
+                      color=('#27ae60' if sig_hb else '#c0392b'), 
+                      fontweight='bold', fontsize=12, pad=15)
+        
+        ax2.set_xlabel(f"Effekt: {eff_hb:.1f} Min | p = {p_hb:.3f}", fontsize=10, labelpad=10)
         ax2.set_xticks([1, 2])
-        ax2.set_xticklabels(['Altes System', 'SmartRail'], fontsize=10)
-        ax2.set_ylim(0, 24)
+        ax2.set_xticklabels(['Altes System', 'SmartRail'], fontsize=9)
+        ax2.set_ylim(0, 26)
         ax2.spines['top'].set_visible(False)
         ax2.spines['right'].set_visible(False)
 
-        # Explizite Abstände statt tight_layout für stabile Darstellung
-        fig.subplots_adjust(wspace=0.35, bottom=0.15, left=0.08, right=0.95)
+        # Optimiertes Spacing: wspace=0.4 verhindert Überlappung der Achsen/Titel
+        fig.subplots_adjust(wspace=0.4, bottom=0.2, top=0.85, left=0.1, right=0.95)
+        
         return fig
 
     @render.ui
