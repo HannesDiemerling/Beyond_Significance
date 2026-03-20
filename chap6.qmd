@@ -13,6 +13,8 @@ Der Mechanismus ist einfach: Forscher reichen signifikante Ergebnisse zuverläss
 Wenn spätere Gutachter den Durchschnitt aller publizierten Studien berechnen, überschätzen sie den wahren Effekt massiv, weil die zahlreichen Null-Ergebnisse schlicht fehlen. Kein Betrug, kein Vorsatz. Nur ein System, das die falsche Frage belohnt: "Ist es signifikant?" statt "Wie groß ist der Effekt wirklich?"
 
 ### Beispiel SmartRail: 40 unabhängige Tests, ein verzerrtes Bild
+
+#TODO: Hier so umbauen, dass alles über 0.
 Unabhängige Forschungsteams testen SmartRail auf 40 Strecken. Der wahre Effekt ist auf all diesen Strecken null, das System bringt dort also keinen weiteren Vorteil. Durch normale statistische Streuung messen einige Teams zufällig einen positiven Effekt, andere einen negativen.
 
 Teams mit signifikant positivem Ergebnis reichen ihre Studie sofort ein, da es sich hier um einen klaren Befund handelt. Teams ohne signifikantes Ergebnis zweifeln: "Haben wir etwas falsch gemacht? Lohnt sich der Aufwand der Einreichung?" Viele legen die Daten in die Schublade.
