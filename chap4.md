@@ -36,6 +36,19 @@ Die Applikation zeigt oben die überlappenden Verteilungen beider Projekte in ih
 2. **Streuung variieren:** Erhöhe die Streuung von Projekt A stark. Der gemessene Effekt (3 Minuten) bleibt gleich, aber d sinkt. Die Verbesserung ist relativ zur natürlichen Schwankung kleiner geworden.
 3. **Benchmarks hinterfragen:** Versuche, beide Projekte auf ein d nahe 0.5 zu bringen. Überlege dann: Ist ein "mittlerer Effekt" bei Verspätungsminuten dasselbe wie bei Kilowattstunden? Cohen's d beantwortet die relative Frage — die praktische Bedeutung musst du selbst beurteilen.
 
+<div id="shiny-loading" style="background:#f0f4ff; border-left:4px solid #4a6fa5; border-radius:4px; padding:10px 14px; margin-bottom:10px; font-size:14px; color:#2c3e50;">
+  ⏳ Die Anwendung wird geladen — bitte bis zu 30 Sekunden warten.
+</div>
+<script>
+(function(){
+  var d = document.getElementById('shiny-loading');
+  if(!d) return;
+  function hide(){ d.style.transition='opacity 0.5s'; d.style.opacity='0'; setTimeout(function(){d.style.display='none';},500); }
+  window.addEventListener('message', function h(e){ hide(); window.removeEventListener('message',h); });
+  setTimeout(hide, 45000);
+})();
+</script>
+
 ```{shinylive-python}
 #| standalone: true
 #| viewerHeight: 820

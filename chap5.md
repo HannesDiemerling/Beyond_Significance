@@ -22,6 +22,19 @@ Die Applikation visualisiert die Lücke zwischen Signifikanz und Bedeutsamkeit. 
 2. **Schwellenwert setzen:** Definiere deine persönliche Grenze: Ab wie vielen Sekunden Zeitgewinn ist ein Projekt für dich im Alltag relevant? Setze die Schwelle auf 120 Sekunden (2 Minuten).
 3. **Effekt verändern:** Erhöhe den gemessenen Effekt mit dem oberen Regler. Beobachte, wann der Balken grün wird und wie sich der Investitionsrechner verändert. Wie viele Sekunden braucht SmartRail, um sein Geld zu rechtfertigen?
 
+<div id="shiny-loading" style="background:#f0f4ff; border-left:4px solid #4a6fa5; border-radius:4px; padding:10px 14px; margin-bottom:10px; font-size:14px; color:#2c3e50;">
+  ⏳ Die Anwendung wird geladen — bitte bis zu 30 Sekunden warten.
+</div>
+<script>
+(function(){
+  var d = document.getElementById('shiny-loading');
+  if(!d) return;
+  function hide(){ d.style.transition='opacity 0.5s'; d.style.opacity='0'; setTimeout(function(){d.style.display='none';},500); }
+  window.addEventListener('message', function h(e){ hide(); window.removeEventListener('message',h); });
+  setTimeout(hide, 45000);
+})();
+</script>
+
 ```{shinylive-python}
 #| standalone: true
 #| viewerHeight: 720

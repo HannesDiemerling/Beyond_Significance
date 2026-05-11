@@ -22,6 +22,19 @@ Die Applikation zeigt zwei überlappende Verteilungen: die Verspätungen ohne Sm
 2. **Effekt vergrößern:** Verschiebe den Durchschnitt von SmartRail auf 2 Minuten. Die blaue Verteilung wandert nach links. Der unstandardisierte Effekt wächst auf 13 Minuten. Beobachte, wie sich der Alltagsrechner verändert.
 3. **Streuung begreifen:** Erhöhe die Schwankung der Verspätung. Die Verteilung wird breit und flach. Der Durchschnittseffekt bleibt gleich, aber das System wird für den einzelnen Fahrgast unzuverlässig. Der Mittelwert allein erzählt nicht die ganze Geschichte.
 
+<div id="shiny-loading" style="background:#f0f4ff; border-left:4px solid #4a6fa5; border-radius:4px; padding:10px 14px; margin-bottom:10px; font-size:14px; color:#2c3e50;">
+  ⏳ Die Anwendung wird geladen — bitte bis zu 30 Sekunden warten.
+</div>
+<script>
+(function(){
+  var d = document.getElementById('shiny-loading');
+  if(!d) return;
+  function hide(){ d.style.transition='opacity 0.5s'; d.style.opacity='0'; setTimeout(function(){d.style.display='none';},500); }
+  window.addEventListener('message', function h(e){ hide(); window.removeEventListener('message',h); });
+  setTimeout(hide, 45000);
+})();
+</script>
+
 ```{shinylive-python}
 #| standalone: true
 #| viewerHeight: 750

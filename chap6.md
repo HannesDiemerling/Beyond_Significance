@@ -26,6 +26,19 @@ Die Applikation zeigt alle 40 Testergebnisse als Balkenchart. Du steuerst, wie s
 2. **Einreichungslücke erhöhen:** Erhöhe den Regler schrittweise. Nicht-signifikante Studien verschwinden aus der Literatur, nicht weil jemand sie versteckt, sondern weil sie nie eingereicht wurden. Beobachte, wie der Gutachter-Durchschnitt steigt.
 3. **Maximaler Bias:** Nur noch signifikante Zufallstreffer sind in der Literatur sichtbar. Der Gutachter bescheinigt SmartRail eine messbare Wirkung, obwohl der wahre Effekt null ist. Niemand hat gelogen. Das System selbst hat das Bild verzerrt.
 
+<div id="shiny-loading" style="background:#f0f4ff; border-left:4px solid #4a6fa5; border-radius:4px; padding:10px 14px; margin-bottom:10px; font-size:14px; color:#2c3e50;">
+  ⏳ Die Anwendung wird geladen — bitte bis zu 30 Sekunden warten.
+</div>
+<script>
+(function(){
+  var d = document.getElementById('shiny-loading');
+  if(!d) return;
+  function hide(){ d.style.transition='opacity 0.5s'; d.style.opacity='0'; setTimeout(function(){d.style.display='none';},500); }
+  window.addEventListener('message', function h(e){ hide(); window.removeEventListener('message',h); });
+  setTimeout(hide, 45000);
+})();
+</script>
+
 ```{shinylive-python}
 #| standalone: true
 #| viewerHeight: 740

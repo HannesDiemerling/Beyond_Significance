@@ -22,6 +22,19 @@ Die Applikation zeigt dir links die Veränderung des p Wertes mit steigender Dat
 2. **Datenflut simulieren:** Erhöhe die Anzahl der gemessenen Züge kontinuierlich. Beobachte: Der p Wert sinkt, die Konfidenzintervalle werden schmaler.
 3. **Das Entscheidende erkennen:** Die Balken selbst bewegen sich nicht. Der Effekt bleibt konstant bei 12 Sekunden. Nur unsere Messgenauigkeit steigt. Signifikanz bedeutet hier ausschließlich: "Wir haben genug Daten gesammelt, um eine winzige Differenz nachzuweisen."
 
+<div id="shiny-loading" style="background:#f0f4ff; border-left:4px solid #4a6fa5; border-radius:4px; padding:10px 14px; margin-bottom:10px; font-size:14px; color:#2c3e50;">
+  ⏳ Die Anwendung wird geladen — bitte bis zu 30 Sekunden warten.
+</div>
+<script>
+(function(){
+  var d = document.getElementById('shiny-loading');
+  if(!d) return;
+  function hide(){ d.style.transition='opacity 0.5s'; d.style.opacity='0'; setTimeout(function(){d.style.display='none';},500); }
+  window.addEventListener('message', function h(e){ hide(); window.removeEventListener('message',h); });
+  setTimeout(hide, 45000);
+})();
+</script>
+
 ```{shinylive-python}
 #| standalone: true
 #| viewerHeight: 700
