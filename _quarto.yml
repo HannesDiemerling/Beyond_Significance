@@ -7,13 +7,13 @@ website:
     style: "docked"
     search: true
     contents:
-      - index.md
-      - chap1.md
-      - chap2.md
-      - chap3.md
-      - chap4.md
-      - chap5.md
-      - chap6.md
+      - index.qmd
+      - chap1.qmd
+      - chap2.qmd
+      - chap3.qmd
+      - chap4.qmd
+      - chap5.qmd
+      - chap6.qmd
 
 format:
   html:
