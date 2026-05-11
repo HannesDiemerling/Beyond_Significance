@@ -8,19 +8,19 @@ format: html
 ### Theorie: Wahre Größe oder reine Datenmasse
 Der p Wert ist eine rein inferenzstatistische Größe. Er berechnet sich aus dem Standardfehler und der Stichprobengröße. Er liefert keine direkte Aussage zur wahren Größe oder zur praktischen Relevanz des gefundenen Effektes.
 
-Das mathematische Problem lautet wie folgt. Der Standardfehler schrumpft automatisch, wenn du die Stichprobengröße erhöhst. Bei einer gigantischen Datenmenge wird der Standardfehler extrem klein. In der Folge wird fast jeder noch so triviale und praktisch irrelevante Unterschied statistisch signifikant (Lin et al., 2013). Die Signifikanz testet primär deine Stichprobengröße, nicht die Wichtigkeit.
+Das mathematische Prinzip lautet wie folgt. Der Standardfehler schrumpft automatisch, wenn du die Stichprobengröße erhöhst. Bei einer sehr großen Datenmenge wird der Standardfehler extrem klein. In der Folge wird fast jeder noch so triviale und praktisch irrelevante Unterschied statistisch signifikant (Lin et al., 2013). Die Signifikanz testet primär deine Stichprobengröße, nicht die Größe oder Wichtigkeit des gefundenen Effektes.
 
 ### Beispiel SmartRail: Der irrelevante Rekord
-Die Deutsche Bahn wertet die SmartRail Daten aus. Das System verbessert die Pünktlichkeit der ICE Züge um exakt 12 Sekunden im Durchschnitt. Für dich als Pendler ist dieser Unterschied im Alltag unsichtbar. Er verpasst deinen Anschlusszug genauso wie vorher.
+Die Deutsche Bahn wertet die SmartRail Daten aus. Das System verbessert die Pünktlichkeit der ICE Züge um 12 Sekunden im Durchschnitt. Für dich als Pendler ist dieser Unterschied im Alltag unsichtbar und volkommen irrelevant. Du verpasst deinen Anschlusszug genauso wie vorher.
 
-Misst du nun die Verspätung von jeweils 20 ICE Zügen, liefert der statistische Test ein nicht signifikantes Ergebnis. Sammelst du jedoch systematisch die Daten von 5000 Fahrten, schrumpft der Standardfehler massiv. Der p Wert fällt unter die magische Schwelle. Die Statistik meldet plötzlich einen hochsignifikanten Unterschied. Die Versuchung ist groß, dies als technischen Durchbruch zu feiern. In der Realität verpasst du deinen Anschlusszug weiterhin genauso oft. Die statistische Signifikanz verdeckt die praktische Irrelevanz.
+Misst du nun die Verspätung von 20 ICE Zügen, liefert der statistische Test ein nicht signifikantes Ergebnis. Sammelst du jedoch systematisch die Daten von 5000 Fahrten, schrumpft der Standardfehler massiv. Der p Wert fällt unter die magische Schwelle. Die Statistik meldet plötzlich einen hochsignifikanten Unterschied. Die Versuchung ist groß, dies als technischen Durchbruch zu feiern. In der Realität verpasst du deinen Anschlusszug weiterhin genauso oft. Die statistische Signifikanz verdeckt die praktische Irrelevanz.
 
 ### Deine Aufgabe
 Die Applikation zeigt dir links die Veränderung des p Wertes mit steigender Datenmenge. Rechts siehst du die gemessenen Mittelwerte beider Gruppen mit ihren Konfidenzintervallen.
 
 1. **Beobachten:** Belasse den Regler bei wenigen ICE Zügen. Der p Wert ist groß, das Ergebnis nicht signifikant. Die Konfidenzintervalle überlappen stark.
 2. **Datenflut simulieren:** Erhöhe die Anzahl der gemessenen Züge kontinuierlich. Beobachte: Der p Wert sinkt, die Konfidenzintervalle werden schmaler.
-3. **Das Entscheidende erkennen:** Die Balken selbst bewegen sich nicht. Der Effekt bleibt konstant bei 12 Sekunden. Nur unsere Messgenauigkeit steigt. Signifikanz bedeutet hier ausschließlich: "Wir haben genug Daten gesammelt, um eine winzige Differenz nachzuweisen."
+3. **Das Entscheidende erkennen:** Die Balken selbst bewegen sich nicht. Der Effekt bleibt konstant bei 12 Sekunden. Nur unsere Stichprobengröße steigt. Signifikanz bedeutet hier ausschließlich: "Wir haben genug Daten gesammelt, um auch zu einer winzigen Differenz etwas statistisch verlässliches sagen zu können."
 
 <div id="shiny-loading" style="background:#f0f4ff; border-left:4px solid #4a6fa5; border-radius:4px; padding:10px 14px; margin-bottom:10px; font-size:14px; color:#2c3e50;">
   ⏳ Die Anwendung wird geladen — bitte bis zu 30 Sekunden warten.
@@ -119,9 +119,8 @@ def server(input, output, session):
         ax2.errorbar(x_pos, means, yerr=[ci, ci],
                       color='#2c3e50', linewidth=2.5, capsize=10, fmt='none')
 
-        ymin = min(means) - 4 * ci - 0.3
-        ymax = max(means) + 4 * ci + 0.3
-        ax2.set_ylim(max(0, ymin), ymax)
+        ci_max = 1.96 * SD / np.sqrt(10)
+        ax2.set_ylim(max(0, MEAN_NEW - ci_max - 0.5), MEAN_OLD + ci_max + 0.5)
         ax2.set_xticks(x_pos)
         ax2.set_xticklabels(labels, fontsize=11)
         ax2.set_ylabel("Durchschnittliche Verspätung (Minuten)")
