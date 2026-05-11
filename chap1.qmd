@@ -53,8 +53,12 @@ N = 30
 MEAN_OLD = 12.5
 MEAN_NEW = 10.4
 
-old_muc = np.random.normal(MEAN_OLD, 3.0, N)
-new_muc = np.random.normal(MEAN_NEW, 3.0, N)
+z_old = np.random.standard_normal(N)
+z_new = np.random.standard_normal(N)
+z_old -= z_old.mean()
+z_new -= z_new.mean()
+old_muc = MEAN_OLD + 3.0 * z_old
+new_muc = MEAN_NEW + 3.0 * z_new
 
 app_ui = ui.page_fluid(
     ui.card(
