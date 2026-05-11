@@ -6,21 +6,21 @@ format: html
 ## Zeit: 15 min | Schwierigkeit: Einsteiger
 
 ### Theorie: Die Rückkehr in die reale Welt
-Wissenschaftliche Forschungsfragen zielen im Kern immer auf Effekte ab. Ein Effekt ist die tatsächliche messbare Veränderung in der realen Welt. Er ist die einzig relevante Größe für die Theorieentwicklung und für praktische Interventionen.
+Wissenschaftliche Forschungsfragen zielen in den meisten Fällen auf Effekte ab. Ein Effekt ist, je nach Forschungsfrage, der Unterschied in der Ausprägung der interessierenden Variable zwischen Gruppen oder Bedingungen oder die Stärke des Zusammenhangs zwischen zwei oder mehr Variablen. Er ist oft die einzig relevante Größe für die Theorieentwicklung und für praktische Interventionen.
 
-Unstandardisierte Effekte messen diese Veränderung strikt in der Einheit des verwendeten Messinstruments. Sie beantworten die Frage nach der Existenz und der exakten Größe eines Effektes direkt und intuitiv. Sie bilden die Basis für praktische Entscheidungen in der echten Welt (Baguley, 2009). Ein p Wert verrät nicht, ob eine Maßnahme ihr Geld wert ist, nur ob ein Schwellenwert überschritten wurde.
+Unstandardisierte Effekte sind in den Einheiten des verwendeten Messinstruments ausgedrückt. Sie beantworten die Frage nach der Existenz und der exakten Größe eines Effektes direkt und intuitiv und bilden die Basis für praktische Entscheidungen (Baguley, 2009). Ein p Wert enthält diese Information nur indirekt, sodass er keine direkte Aussage über Richtung oder Größe eines gefundenen Effekts liefert.
 
 ### Beispiel SmartRail: Was bringt das System wirklich?
-Die Bahn hat SmartRail ausgerollt und meldet statistisch signifikante Verbesserungen. Jetzt stellt sich die entscheidende Frage: Wie viele Minuten Verspätung spart das System tatsächlich ein?
+Die Bahn hat SmartRail ausgerollt und seine Wirksamkeit untersucht. Jetzt stellt sich die entscheidende Frage: Wie viele Minuten Verspätung spart das System tatsächlich ein?
 
-Dieser rohe Zeitwert in Minuten ist der unstandardisierte Effekt. Er ist sofort greifbar. Spart SmartRail durchschnittlich 0.5 Minuten, ist das für den Pendler kaum spürbar. Spart es 12 Minuten, verändert das den Arbeitsweg täglich messbar. Der unstandardisierte Effekt in Minuten liefert die entscheidende Information, um die praktische Relevanz des Projekts zu beurteilen. Er ist die Brücke von der Statistik in die Realität.
+Dieser rohe Differenzwert in Minuten ist der unstandardisierte Effekt. Er ist sofort greifbar. Spart SmartRail durchschnittlich 0.5 Minuten, ist das für den Pendler kaum spürbar. Spart es 12 Minuten, verändert das den Arbeitsweg täglich deutlich. Der unstandardisierte Effekt in Minuten liefert die entscheidende Information, um die praktische Relevanz des Projekts zu beurteilen. Er ist die Brücke von der Statistik in die Realität.
 
 ### Deine Aufgabe
-Die Applikation zeigt zwei überlappende Verteilungen: die Verspätungen ohne SmartRail (grau) und mit SmartRail (blau). Der Alltagsrechner unten übersetzt den gemessenen Effekt direkt in deinen Pendelralltag.
+Die Applikation zeigt zwei überlappende Verteilungen: die Verspätungen ohne SmartRail (grau) und mit SmartRail (blau). Der Alltagsrechner unten übersetzt den gemessenen Effekt direkt in deinen Pendleralltag.
 
 1. **Beobachten:** Bei den Startwerten überschneiden sich die Verteilungen stark. Der unstandardisierte Effekt beträgt 5 Minuten. Der Alltagsrechner zeigt, was das für einen Jahrespendler bedeutet.
 2. **Effekt vergrößern:** Verschiebe den Durchschnitt von SmartRail auf 2 Minuten. Die blaue Verteilung wandert nach links. Der unstandardisierte Effekt wächst auf 13 Minuten. Beobachte, wie sich der Alltagsrechner verändert.
-3. **Streuung begreifen:** Erhöhe die Schwankung der Verspätung. Die Verteilung wird breit und flach. Der Durchschnittseffekt bleibt gleich, aber das System wird für den einzelnen Fahrgast unzuverlässig. Der Mittelwert allein erzählt nicht die ganze Geschichte.
+3. **Streuung begreifen:** Erhöhe die Schwankung der Verspätung. Die Verteilung wird breiter und flacher. Der Unterschied bleibt gleich, aber das System wird für den einzelnen Fahrgast unzuverlässig. Der undstandardisierte Mittelwertsunterschied allein ist also schon das entscheidende Maß,erzählt aber noch nicht die ganze Geschichte.
 
 <div id="shiny-loading" style="background:#f0f4ff; border-left:4px solid #4a6fa5; border-radius:4px; padding:10px 14px; margin-bottom:10px; font-size:14px; color:#2c3e50;">
   ⏳ Die Anwendung wird geladen — bitte bis zu 30 Sekunden warten.
@@ -42,6 +42,7 @@ Die Applikation zeigt zwei überlappende Verteilungen: die Verspätungen ohne Sm
 from shiny import App, render, ui
 import numpy as np
 import matplotlib.pyplot as plt
+from scipy.stats import norm
 
 MEAN_OLD = 15.0
 SD_OLD   = 5.0
@@ -56,6 +57,7 @@ app_ui = ui.page_fluid(
                 ui.input_slider("new_sd",   "Schwankung der Verspätung mit SmartRail (Min)", 1, 15, 4),
                 ui.hr(),
                 ui.output_ui("alltagsrechner"),
+                ui.output_ui("einzelfahrt_panel"),
             ),
             ui.output_plot("hist_plot"),
             col_widths=(4, 8)
@@ -145,6 +147,49 @@ def server(input, output, session):
                 ui.tags.span(f"= {stunden:.1f} Stunden",
                              style=f"color:{farbe}; font-weight:bold; font-size:16px;"),
                 " pro Jahr",
+            ),
+            style="background:#f8f9fa; padding:12px; border-radius:8px; margin-top:8px;"
+        )
+
+    @render.ui
+    def einzelfahrt_panel():
+        mean_new = input.new_mean()
+        sd_new   = input.new_sd()
+        effect   = MEAN_OLD - mean_new
+
+        # P(SmartRail-Fahrt < Alt-Fahrt) = Phi(effect / sqrt(SD_OLD² + sd_new²))
+        sigma_diff = np.sqrt(SD_OLD**2 + sd_new**2)
+        prob = norm.cdf(effect / sigma_diff) if sigma_diff > 0 else 0.5
+        pct  = prob * 100
+
+        if effect <= 0:
+            color = "#c0392b"
+            fazit = "SmartRail verschlechtert die Einzelfahrt."
+        elif pct >= 80:
+            color = "#27ae60"
+            fazit = "Effekt ist für die Einzelfahrt klar spürbar."
+        elif pct >= 65:
+            color = "#e67e22"
+            fazit = "Effekt ist für die Einzelfahrt mäßig spürbar."
+        else:
+            color = "#c0392b"
+            fazit = "Effekt geht in der Streuung unter."
+
+        return ui.div(
+            ui.tags.p("Einzelfahrt-Perspektive",
+                      style="font-weight:bold; font-size:13px; margin-bottom:6px; margin-top:10px;"),
+            ui.tags.p(
+                ui.tags.span(f"{pct:.0f}% ",
+                             style=f"color:{color}; font-weight:bold; font-size:16px;"),
+                "der Fahrten pünktlicher",
+            ),
+            ui.tags.p(fazit, style=f"color:{color}; font-size:12px; font-style:italic;"),
+            ui.tags.hr(style="margin:6px 0;"),
+            ui.tags.p(
+                "Der Mittelwertsunterschied allein sagt nicht, wie verlässlich "
+                "der Effekt für die einzelne Fahrt ist — das hängt auch von "
+                "der Streuung ab.",
+                style="font-size:11px; color:#7f8c8d;"
             ),
             style="background:#f8f9fa; padding:12px; border-radius:8px; margin-top:8px;"
         )
