@@ -6,12 +6,12 @@ format: html
 ## Zeit: 15 min | Schwierigkeit: Einsteiger
 
 ### Theorie: Messbar ist nicht gleich wichtig
-Statistische Signifikanz wird oft fälschlicherweise mit praktischer Bedeutsamkeit gleichgesetzt. Die Relevanz einer Maßnahme für die Praxis kann ausschließlich anhand der tatsächlichen Effektgröße beurteilt werden.
+Statistische Signifikanz wird oft fälschlicherweise mit praktischer Bedeutsamkeit gleichgesetzt. Die Relevanz einer Maßnahme für die Praxis kann ausschließlich anhand der Effekte oder Effektgrößen beurteilt werden.
 
-Ein winziger p Wert bedeutet lediglich, dass ein Effekt mit hoher Sicherheit nicht exakt null ist. Über den echten Nutzen in der realen Welt sagt diese Metrik wenig aus. Cohen kritisierte diese Verwechslung scharf und betonte, dass eine quantitative Wissenschaft ihr primäres Ziel verfehlt, wenn sie Entscheidungen auf p Werte stützt anstatt auf die messbare Größe von Effekten (Cohen, 1990).
+Über den echten Nutzen in der realen Welt sagt fast gar nichts aus. Cohen kritisierte diese Verwechslung scharf und betonte, dass eine quantitative Wissenschaft ihr primäres Ziel verfehlt, wenn sie Entscheidungen auf p Werte stützt anstatt auf die Größe von Effekten (Cohen, 1990).
 
 ### Beispiel SmartRail: Das hochsignifikante Nichts
-Die Bahn investiert 180 Millionen Euro in den bundesweiten SmartRail Rollout. Eine gigantische Studie mit 200.000 ICE Fahrten beweist: SmartRail verbessert die Pünktlichkeit statistisch hochsignifikant, p < 0.001. Das Projektteam präsentiert den winzigen p Wert als Beleg für einen enormen Erfolg.
+Die Bahn investiert 180 Millionen Euro in den bundesweiten SmartRail Rollout. Eine gigantische Studie mit 200.000 ICE Fahrten zeigt: SmartRail verbessert die Pünktlichkeit statistisch hochsignifikant, p < 0.001. Das Projektteam präsentiert den winzigen p Wert als Beleg für einen enormen Erfolg.
 
 Du schaust als Pendler auf den unstandardisierten Effekt: SmartRail spart dir im Schnitt 4 Sekunden pro Fahrt. Der Anschlusszug fährt weiter pünktlich ohne dich ab. Die Investition war statistisch gesehen ein Triumph, praktisch gesehen ein teures Nichts. Die Frage ist nicht "Ist der Effekt von null verschieden?" sondern "Ist der Effekt groß genug, um die Kosten zu rechtfertigen?"
 
@@ -20,7 +20,7 @@ Die Applikation visualisiert die Lücke zwischen Signifikanz und Bedeutsamkeit. 
 
 1. **Beobachten:** Bei den Startwerten spart SmartRail 4 Sekunden pro Fahrt. Das Projekt verfehlt deine Relevanzschwelle massiv und kostet die Bahn unverhältnismäßig viel pro eingesparter Stunde.
 2. **Schwellenwert setzen:** Definiere deine persönliche Grenze: Ab wie vielen Sekunden Zeitgewinn ist ein Projekt für dich im Alltag relevant? Setze die Schwelle auf 120 Sekunden (2 Minuten).
-3. **Effekt verändern:** Erhöhe den gemessenen Effekt mit dem oberen Regler. Beobachte, wann der Balken grün wird und wie sich der Investitionsrechner verändert. Wie viele Sekunden braucht SmartRail, um sein Geld zu rechtfertigen?
+3. **Effekt verändern:** Erhöhe den gemessenen Effekt mit dem oberen Regler. Beobachte, wann der Balken grün wird und wie sich der Investitionsrechner verändert. Um wie viele Sekunden muss SmartRail nach deinen Angaben schneller sein, um sein Geld zu rechtfertigen?
 
 <div id="shiny-loading" style="background:#f0f4ff; border-left:4px solid #4a6fa5; border-radius:4px; padding:10px 14px; margin-bottom:10px; font-size:14px; color:#2c3e50;">
   ⏳ Die Anwendung wird geladen, dies kann bis zu 30 Sekunden dauern.
@@ -90,7 +90,8 @@ def server(input, output, session):
 
         status = "Praktisch relevant" if is_relevant else "Praktisch irrelevant"
         status_color = '#27ae60' if is_relevant else '#c0392b'
-        ax.set_title(f"Hochsignifikant, aber: {status}",
+        konj = "und" if is_relevant else "aber"
+        ax.set_title(f"Hochsignifikant, {konj}: {status}",
                      fontweight='bold', color=status_color, fontsize=13)
 
         # Annotation: was bedeutet der Effekt in Minuten?
