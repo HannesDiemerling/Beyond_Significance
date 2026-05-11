@@ -7,13 +7,16 @@ website:
     style: "docked"
     search: true
     contents:
-      - index.qmd
+      - index.md
       - chap1.qmd
       - chap2.qmd
       - chap3.qmd
       - chap4.qmd
       - chap5.qmd
       - chap6.qmd
+
+execute:
+  enabled: false
 
 format:
   html:
