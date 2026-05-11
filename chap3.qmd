@@ -23,7 +23,7 @@ Die Applikation zeigt zwei überlappende Verteilungen: die Verspätungen ohne Sm
 3. **Streuung begreifen:** Erhöhe die Schwankung der Verspätung. Die Verteilung wird breiter und flacher. Der Unterschied bleibt gleich, aber das System wird für den einzelnen Fahrgast unzuverlässig. Der undstandardisierte Mittelwertsunterschied allein ist also schon das entscheidende Maß,erzählt aber noch nicht die ganze Geschichte.
 
 <div id="shiny-loading" style="background:#f0f4ff; border-left:4px solid #4a6fa5; border-radius:4px; padding:10px 14px; margin-bottom:10px; font-size:14px; color:#2c3e50;">
-  ⏳ Die Anwendung wird geladen — bitte bis zu 30 Sekunden warten.
+  ⏳ Die Anwendung wird geladen, dies kann bis zu 30 Sekunden dauern.
 </div>
 <script>
 (function(){

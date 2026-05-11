@@ -23,7 +23,7 @@ Die Applikation visualisiert die Lücke zwischen Signifikanz und Bedeutsamkeit. 
 3. **Effekt verändern:** Erhöhe den gemessenen Effekt mit dem oberen Regler. Beobachte, wann der Balken grün wird und wie sich der Investitionsrechner verändert. Wie viele Sekunden braucht SmartRail, um sein Geld zu rechtfertigen?
 
 <div id="shiny-loading" style="background:#f0f4ff; border-left:4px solid #4a6fa5; border-radius:4px; padding:10px 14px; margin-bottom:10px; font-size:14px; color:#2c3e50;">
-  ⏳ Die Anwendung wird geladen — bitte bis zu 30 Sekunden warten.
+  ⏳ Die Anwendung wird geladen, dies kann bis zu 30 Sekunden dauern.
 </div>
 <script>
 (function(){

@@ -23,7 +23,7 @@ Die Applikation zeigt dir links die Veränderung des p Wertes mit steigender Dat
 3. **Das Entscheidende erkennen:** Die Balken selbst bewegen sich nicht. Der Effekt bleibt konstant bei 12 Sekunden. Nur unsere Stichprobengröße steigt. Signifikanz bedeutet hier ausschließlich: "Wir haben genug Daten gesammelt, um auch zu einer winzigen Differenz etwas statistisch verlässliches sagen zu können."
 
 <div id="shiny-loading" style="background:#f0f4ff; border-left:4px solid #4a6fa5; border-radius:4px; padding:10px 14px; margin-bottom:10px; font-size:14px; color:#2c3e50;">
-  ⏳ Die Anwendung wird geladen — bitte bis zu 30 Sekunden warten.
+  ⏳ Die Anwendung wird geladen, dies kann bis zu 30 Sekunden dauern.
 </div>
 <script>
 (function(){

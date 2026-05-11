@@ -27,7 +27,7 @@ Die Applikation zeigt alle 40 Testergebnisse als Balkenchart. Du steuerst, wie s
 3. **Maximaler Bias:** Nur noch signifikante Zufallstreffer sind in der Literatur sichtbar. Der Gutachter bescheinigt SmartRail eine messbare Wirkung, obwohl der wahre Effekt null ist. Niemand hat gelogen. Das System selbst hat das Bild verzerrt.
 
 <div id="shiny-loading" style="background:#f0f4ff; border-left:4px solid #4a6fa5; border-radius:4px; padding:10px 14px; margin-bottom:10px; font-size:14px; color:#2c3e50;">
-  ⏳ Die Anwendung wird geladen — bitte bis zu 30 Sekunden warten.
+  ⏳ Die Anwendung wird geladen, dies kann bis zu 30 Sekunden dauern.
 </div>
 <script>
 (function(){
@@ -172,7 +172,7 @@ def server(input, output, session):
             interpretation = "Vollständiges Bild. Der Gutachter sieht die Realität: kein Effekt."
             interp_color   = "#27ae60"
         elif abs(ueberschaetz) < 0.4:
-            interpretation = "Leichte Verzerrung — der Gutachter unterschätzt das Problem noch."
+            interpretation = "Leichte Verzerrung, der Gutachter unterschätzt das Problem noch."
             interp_color   = "#e67e22"
         else:
             interpretation = (

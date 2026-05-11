@@ -27,7 +27,7 @@ Die Applikation simuliert drei typische Vorgehensweisen im Umgang mit p-Werten �
 3. **Vollständige Ansicht:** Schalte auf "Vollständige Ansicht". Jetzt siehst du beide Strecken gleichzeitig — und erkennst das Absurde: Beide Effekte sind faktisch identisch. Allein die Streuung hat entschieden, was als Erfolg gilt und was nicht.
 
 <div id="shiny-loading" style="background:#f0f4ff; border-left:4px solid #4a6fa5; border-radius:4px; padding:10px 14px; margin-bottom:10px; font-size:14px; color:#2c3e50;">
-  ⏳ Die Anwendung wird geladen — bitte bis zu 30 Sekunden warten.
+  ⏳ Die Anwendung wird geladen, dies kann bis zu 30 Sekunden dauern.
 </div>
 <script>
 (function(){

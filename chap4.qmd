@@ -3,41 +3,37 @@ title: "2.4 Standardisierte Effektgrößen"
 format: html
 ---
 
-## Zeit: 15 min | Schwierigkeit: Einsteiger
+## Zeit: 20 min | Schwierigkeit: Einsteiger
 
-### Theorie: Äpfel mit Birnen vergleichen
-Unstandardisierte Effekte in originalen Maßeinheiten stoßen an ihre Grenzen, wenn du Studien vergleichen willst, die unterschiedliche Messinstrumente verwenden.
+### Theorie: Effekte auf gemeinsamer Skala
 
-Wie vergleichst du eine Maßnahme, die in Minuten gemessen wird, mit einer Maßnahme, die in Kilowattstunden gemessen wird? Hierfür benötigen wir standardisierte Effektgrößen. Sie transformieren den Effekt in eine dimensionslose Zahl: die Anzahl der Standardabweichungen, um die sich die Gruppen unterscheiden.
+Der unstandardisierte Effekt ist direkt interpretierbar und praktisch relevant. Er hat jedoch zwei Grenzen.
 
-Die bekannteste standardisierte Effektgröße ist **Cohens d**. Die Formel lautet:
+Erstens sagt er nichts darüber aus, wie gut der Effekt im Verhältnis zur natürlichen Schwankung der Messung erkennbar ist. Zwei Studien finden denselben mittleren Zeitgewinn von 5 Minuten. Bei der einen beträgt die typische Streuung 2 Minuten, bei der anderen 20 Minuten. Im ersten Fall ist die Verbesserung für fast jeden Fahrgast spürbar, im zweiten geht sie im Rauschen unter. Der rohe Mittelwertsunterschied allein zeigt das nicht.
 
-$$d = \frac{|\bar{M}_1 - \bar{M}_2|}{SD_{pooled}}$$
+Zweitens lassen sich Effekte nicht direkt vergleichen, wenn dasselbe Konstrukt mit unterschiedlichen Messinstrumenten erfasst wurde. Zwei Forschungsteams messen die Kundenzufriedenheit: Team Nord mit einer 5-Punkte-Skala, Team Süd mit einer 100-Punkte-Skala. Team Nord findet eine Verbesserung von 0.5 Punkten, Team Süd von 10 Punkten. Handelt es sich um denselben Effekt? Anhand der Rohwerte ist das nicht zu beurteilen.
 
-Du teilst den absoluten Unterschied der Mittelwerte durch die **gepoolte Standardabweichung** beider Gruppen. Die gepoolte Standardabweichung ist das gewichtete Mittel der Streuungen in beiden Gruppen und beschreibt, wie stark die Messwerte natürlicherweise variieren.
+Cohens d adressiert beide Probleme, indem es den Effekt in Einheiten der Standardabweichung ausdrückt:
 
-Das Ergebnis ist eine dimensionslose Zahl ohne Maßeinheit. Ein Wert von d = 0.5 bedeutet: Die Gruppen unterscheiden sich um eine halbe Standardabweichung. Weil beide Metriken nun in Standardabweichungen ausgedrückt werden, sind sie direkt vergleichbar, egal ob wir Minuten oder Kilowattstunden gemessen haben.
+$$d = \frac{|\bar{M}_1 - \bar{M}_2|}{SD}$$
 
-**Wichtiger Vorbehalt:** Cohen selbst betonte ausdrücklich, dass seine Richtwerte (0.2 = klein, 0.5 = mittel, 0.8 = groß) nur grobe Orientierungen für Situationen sind, in denen keine domänenspezifischen Referenzwerte vorliegen (Cohen, 1988). Sie sind keine Diagnosekriterien und sollten nicht als starre Schwellenwerte verwendet werden, sonst replizieren wir das binäre Denken aus Kapitel 2.1. Ein d = 0.3 kann in einem Kontext bedeutsam und in einem anderen trivial sein.
+Ein d = 0.5 bedeutet: Die Gruppen liegen eine halbe Standardabweichung auseinander. Weil der Effekt nun relativ zur natürlichen Variabilität der Messung ausgedrückt ist, lassen sich Studien mit unterschiedlichen Skalen direkt vergleichen.
 
-**Ein weiterer Vorbehalt:** Die Standardisierung entfernt die Maßeinheit, nicht den inhaltlichen Kontext. Ein d = 0.5 für Verspätung ist nicht automatisch "genauso wichtig" wie ein d = 0.5 für Energieverbrauch. Der Vergleich via Cohens d beantwortet die Frage, welcher Effekt *relativ zu seiner natürlichen Streuung* größer ist — nicht unbedingt, welcher praktisch bedeutsamer ist.
+**Wichtiger Vorbehalt:** Die Richtwerte von Cohen (0.2, 0.5, 0.8) sind grobe Orientierungen, keine inhaltlichen Kriterien (Cohen, 1988). Ein d = 0.3 kann in einem Kontext wichtig und in einem anderen trivial sein. Die Interpretation erfordert immer den sachlichen Kontext.
 
-### Beispiel SmartRail: Zwei Kennzahlen, eine Skala
-Der Vorstand bewertet SmartRail anhand zweier Kennzahlen. Projekt A misst die Verbesserung der Pünktlichkeit in Minuten. Projekt B misst die Reduzierung des Energieverbrauchs in kWh pro 100 km.
+### Beispiel SmartRail: Zwei Aspekte, eine Formel
 
-Beide Projekte berichten Verbesserungen. Projekt A senkt die Verspätung um 3 Minuten. Projekt B senkt den Energieverbrauch um 2 kWh. Welche Verbesserung ist relativ zur natürlichen Schwankung der jeweiligen Messung größer?
+**Aspekt 1: Entdeckbarkeit.** In Kapitel 2.3 haben wir gesehen, dass derselbe Mittelwertsunterschied bei hoher Streuung kaum spürbar ist. Cohens d quantifiziert genau dieses Signal-Rausch-Verhältnis. Ein kleines d bedeutet, der Effekt geht im Rauschen unter; ein großes d bedeutet, er ist klar erkennbar.
 
-3 Minuten und 2 kWh lassen sich nicht direkt vergleichen. Erst wenn wir beide Effekte durch ihre jeweilige gepoolte Standardabweichung teilen, werden sie vergleichbar. Die Verteilungsplots zeigen dir visuell, was verschiedene d-Werte bedeuten: Je weiter die Gipfel der beiden Kurven auseinanderliegen, desto größer ist d.
+**Aspekt 2: Vergleichbarkeit.** Zwei Forschungsteams messen die Zufriedenheit der Fahrgäste mit SmartRail, nutzen aber unterschiedliche Fragebögen. Team Nord verwendet eine 5-Punkte-Skala, Team Süd eine 100-Punkte-Skala. Die Rohwerte sind nicht direkt vergleichbar. Cohens d schafft eine gemeinsame Skala: Beide Teams können dasselbe d berichten, auch wenn ihre Punktwerte weit auseinanderliegen.
 
 ### Deine Aufgabe
-Die Applikation zeigt oben die überlappenden Verteilungen beider Projekte in ihren jeweiligen Originaleinheiten. Unten siehst du die standardisierten Cohens d Werte im direkten Vergleich.
 
-1. **Verteilungen lesen:** Beobachte die Überlappung beider Kurvenpaare. Wo die Gipfel weiter auseinanderliegen und die Überlappung kleiner ist, ist d größer.
-2. **Streuung variieren:** Erhöhe die Streuung von Projekt A stark. Der gemessene Effekt (3 Minuten) bleibt gleich, aber d sinkt. Die Verbesserung ist relativ zur natürlichen Schwankung kleiner geworden.
-3. **Benchmarks hinterfragen:** Versuche, beide Projekte auf ein d nahe 0.5 zu bringen. Überlege dann: Ist ein "mittlerer Effekt" bei Verspätungsminuten dasselbe wie bei Kilowattstunden? Cohen's d beantwortet die relative Frage — die praktische Bedeutung musst du selbst beurteilen.
+1. **Entdeckbarkeit (Aspekt 1):** Belasse den Effekt bei 5 Minuten und variiere die Streuung. Beobachte, wie d sinkt und die Verteilungen immer stärker überlappen. Bei kleinem d geht der Effekt für die einzelne Fahrt praktisch im Rauschen unter.
+2. **Vergleichbarkeit (Aspekt 2):** Wechsle zu Aspekt 2 und verschiebe den d-Regler. Die Rohwerte der beiden Teams laufen auseinander, aber d bleibt identisch. Das ist der Mehrwert der Standardisierung: Vergleichbarkeit trotz unterschiedlicher Skalen.
 
 <div id="shiny-loading" style="background:#f0f4ff; border-left:4px solid #4a6fa5; border-radius:4px; padding:10px 14px; margin-bottom:10px; font-size:14px; color:#2c3e50;">
-  ⏳ Die Anwendung wird geladen — bitte bis zu 30 Sekunden warten.
+  ⏳ Die Anwendung wird geladen, dies kann bis zu 30 Sekunden dauern.
 </div>
 <script>
 (function(){
@@ -51,33 +47,52 @@ Die Applikation zeigt oben die überlappenden Verteilungen beider Projekte in ih
 
 ```{shinylive-python}
 #| standalone: true
-#| viewerHeight: 820
+#| viewerHeight: 780
 
 from shiny import App, render, ui
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.gridspec import GridSpec
 from scipy.stats import norm
 
-MEAN_OLD_A = 15.0    # Verspätung ohne SmartRail (Min)
-MEAN_OLD_B = 85.0    # Energie ohne SmartRail (kWh/100km)
+EFFECT_MIN = 5.0     # fixer Zeitgewinn (Aspekt 1)
+MEAN_OLD   = 15.0    # Baseline-Verspätung (Aspekt 1)
+
+SD_NORD   = 1.0      # Aspekt 2: Instrument Team Nord (5-Punkte-Skala)
+SD_SUED   = 20.0     # Aspekt 2: Instrument Team Süd (100-Punkte-Skala)
+BASE_NORD = 3.2      # Baseline-Zufriedenheit Team Nord
+BASE_SUED = 64.0     # Baseline-Zufriedenheit Team Süd
 
 app_ui = ui.page_fluid(
     ui.card(
-        ui.card_header("SmartRail: Zwei Kennzahlen auf einer Skala"),
+        ui.card_header("SmartRail: Cohens d in zwei Kontexten"),
         ui.layout_columns(
             ui.div(
-                ui.h6("Projekt A: Verspätung"),
-                ui.input_slider("eff_a", "Verbesserung (Minuten)", 0.5, 15.0, 3.0, step=0.5),
-                ui.input_slider("sd_a",  "Streuung (Minuten)",     1.0, 12.0, 5.0, step=0.5),
+                ui.h5("Aspekt"),
+                ui.input_radio_buttons(
+                    "aspekt", None,
+                    choices={
+                        "detect":  "1. Entdeckbarkeit",
+                        "compare": "2. Vergleichbarkeit",
+                    },
+                    selected="detect"
+                ),
                 ui.hr(),
-                ui.h6("Projekt B: Energieverbrauch"),
-                ui.input_slider("eff_b", "Verbesserung (kWh/100km)", 0.5, 10.0, 2.0, step=0.5),
-                ui.input_slider("sd_b",  "Streuung (kWh)",           1.0, 15.0, 8.0, step=0.5),
+                ui.panel_conditional(
+                    "input.aspekt === 'detect'",
+                    ui.h5("Streuung einstellen"),
+                    ui.input_slider("sd_val", "Streuung der Verspätung (Min)",
+                                    min=1.0, max=20.0, value=5.0, step=0.5),
+                ),
+                ui.panel_conditional(
+                    "input.aspekt === 'compare'",
+                    ui.h5("Effektgröße einstellen"),
+                    ui.input_slider("d_val", "Cohens d",
+                                    min=0.1, max=1.5, value=0.5, step=0.05),
+                ),
                 ui.hr(),
-                ui.output_ui("cohen_panel"),
+                ui.output_ui("info_panel"),
             ),
-            ui.output_plot("overview_plot"),
+            ui.output_plot("main_plot"),
             col_widths=(4, 8)
         )
     )
@@ -85,120 +100,159 @@ app_ui = ui.page_fluid(
 
 def server(input, output, session):
 
-    def get_d(eff, sd):
-        return eff / sd if sd > 0 else 0
-
     @render.plot
-    def overview_plot():
-        eff_a = input.eff_a()
-        sd_a  = input.sd_a()
-        eff_b = input.eff_b()
-        sd_b  = input.sd_b()
+    def main_plot():
+        aspekt = input.aspekt()
 
-        d_a = get_d(eff_a, sd_a)
-        d_b = get_d(eff_b, sd_b)
+        if aspekt == "detect":
+            sd      = input.sd_val()
+            d       = EFFECT_MIN / sd
+            mean_new = MEAN_OLD - EFFECT_MIN
 
-        fig = plt.figure(figsize=(11, 9))
-        gs  = GridSpec(2, 2, figure=fig, hspace=0.5, wspace=0.35)
-        ax1 = fig.add_subplot(gs[0, 0])   # Verteilung Projekt A
-        ax2 = fig.add_subplot(gs[0, 1])   # Verteilung Projekt B
-        ax3 = fig.add_subplot(gs[1, :])   # Cohen's d Vergleich
+            span = max(4.0 * sd, EFFECT_MIN + 2.0 * sd)
+            x    = np.linspace(mean_new - span, MEAN_OLD + span, 500)
 
-        # --- Projekt A: Verspätung ---
-        span_a  = max(4 * sd_a, eff_a + 2 * sd_a)
-        x_a     = np.linspace(MEAN_OLD_A - span_a, MEAN_OLD_A + span_a, 400)
-        y_old_a = norm.pdf(x_a, MEAN_OLD_A,          sd_a)
-        y_new_a = norm.pdf(x_a, MEAN_OLD_A - eff_a,  sd_a)
+            y_old = norm.pdf(x, MEAN_OLD,  sd)
+            y_new = norm.pdf(x, mean_new,  sd)
 
-        ax1.fill_between(x_a, y_old_a, alpha=0.45, color='#95a5a6', label='Ohne SmartRail')
-        ax1.fill_between(x_a, y_new_a, alpha=0.55, color='#3498db', label='Mit SmartRail')
-        ax1.axvline(MEAN_OLD_A,          color='#7f8c8d', linestyle='dotted', lw=1.5)
-        ax1.axvline(MEAN_OLD_A - eff_a,  color='#2980b9', linestyle='dotted', lw=1.5)
-        ax1.set_xlabel("Verspätung (Minuten)")
-        ax1.set_ylabel("Dichte")
-        ax1.set_title(f"Projekt A — d = {d_a:.2f}", fontweight='bold', fontsize=11)
-        ax1.legend(fontsize=8, loc='upper right')
-        ax1.spines['top'].set_visible(False)
-        ax1.spines['right'].set_visible(False)
+            fig, ax = plt.subplots(figsize=(10, 6))
+            ax.fill_between(x, y_old, alpha=0.45, color='#95a5a6', label='Ohne SmartRail')
+            ax.fill_between(x, y_new, alpha=0.55, color='#3498db', label='Mit SmartRail')
+            ax.axvline(MEAN_OLD,  color='#7f8c8d', linestyle='dotted', lw=1.5)
+            ax.axvline(mean_new,  color='#2980b9', linestyle='dotted', lw=1.5)
 
-        # --- Projekt B: Energie ---
-        span_b  = max(4 * sd_b, eff_b + 2 * sd_b)
-        x_b     = np.linspace(MEAN_OLD_B - span_b, MEAN_OLD_B + span_b, 400)
-        y_old_b = norm.pdf(x_b, MEAN_OLD_B,          sd_b)
-        y_new_b = norm.pdf(x_b, MEAN_OLD_B - eff_b,  sd_b)
+            y_top = max(y_old.max(), y_new.max()) * 0.88
+            ax.annotate("", xy=(mean_new, y_top), xytext=(MEAN_OLD, y_top),
+                        arrowprops=dict(arrowstyle="<->", color='#2c3e50', lw=2))
+            ax.text((MEAN_OLD + mean_new) / 2, y_top * 1.05,
+                    f'{EFFECT_MIN:.0f} Min', ha='center',
+                    fontweight='bold', fontsize=11, color='#2c3e50')
 
-        ax2.fill_between(x_b, y_old_b, alpha=0.45, color='#95a5a6', label='Ohne SmartRail')
-        ax2.fill_between(x_b, y_new_b, alpha=0.55, color='#27ae60', label='Mit SmartRail')
-        ax2.axvline(MEAN_OLD_B,          color='#7f8c8d', linestyle='dotted', lw=1.5)
-        ax2.axvline(MEAN_OLD_B - eff_b,  color='#229954', linestyle='dotted', lw=1.5)
-        ax2.set_xlabel("Energieverbrauch (kWh/100km)")
-        ax2.set_ylabel("Dichte")
-        ax2.set_title(f"Projekt B — d = {d_b:.2f}", fontweight='bold', fontsize=11)
-        ax2.legend(fontsize=8, loc='upper right')
-        ax2.spines['top'].set_visible(False)
-        ax2.spines['right'].set_visible(False)
+            ax.set_title(f"d = {EFFECT_MIN:.0f} Min / {sd:.1f} Min = {d:.2f}",
+                         fontweight='bold', fontsize=13)
+            ax.set_xlabel("Verspätung in Minuten")
+            ax.set_ylabel("Dichte")
+            ax.legend(loc='upper right')
+            ax.spines['top'].set_visible(False)
+            ax.spines['right'].set_visible(False)
+            fig.subplots_adjust(bottom=0.15, left=0.12, right=0.95, top=0.88)
+            return fig
 
-        # --- Cohen's d Vergleich ---
-        d_max    = max(d_a, d_b, 1.0)
-        y_limit  = max(d_max * 1.35, 1.1)
-        bar_cols = ['#3498db', '#27ae60']
+        else:
+            d = input.d_val()
+            eff_nord = d * SD_NORD
+            eff_sued = d * SD_SUED
 
-        bars = ax3.bar(['Projekt A\n(Verspätung in Min)', 'Projekt B\n(Energie in kWh/100km)'],
-                       [d_a, d_b], color=bar_cols, width=0.4, alpha=0.85)
+            fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(13, 6))
 
-        for thresh, label in [(0.2, 'Kleiner Effekt (0.2)'),
-                               (0.5, 'Mittlerer Effekt (0.5)'),
-                               (0.8, 'Großer Effekt (0.8)')]:
-            ax3.axhline(thresh, color='#bdc3c7', linestyle='dotted', linewidth=1.5)
-            ax3.text(1.5, thresh + 0.02, label, color='#95a5a6', fontsize=9, ha='right')
+            # Team Nord
+            span_n = 3.5 * SD_NORD
+            x_n    = np.linspace(BASE_NORD - span_n, BASE_NORD + eff_nord + span_n, 400)
+            yn_base = norm.pdf(x_n, BASE_NORD,            SD_NORD)
+            yn_new  = norm.pdf(x_n, BASE_NORD + eff_nord, SD_NORD)
 
-        for bar in bars:
-            h = bar.get_height()
-            ax3.text(bar.get_x() + bar.get_width() / 2, h + 0.03,
-                     f'd = {h:.2f}', ha='center', va='bottom',
-                     fontweight='bold', fontsize=12)
+            ax1.fill_between(x_n, yn_base, alpha=0.45, color='#95a5a6', label='Ohne SmartRail')
+            ax1.fill_between(x_n, yn_new,  alpha=0.55, color='#3498db', label='Mit SmartRail')
+            ax1.axvline(BASE_NORD,            color='#7f8c8d', linestyle='dotted', lw=1.5)
+            ax1.axvline(BASE_NORD + eff_nord, color='#2980b9', linestyle='dotted', lw=1.5)
 
-        ax3.set_ylim(0, y_limit)
-        ax3.set_ylabel("Cohens d (Standardabweichungen)")
-        ax3.set_title("Vergleich auf einheitlicher Skala — Richtwerte nach Cohen (1988)",
-                      fontsize=11)
-        ax3.spines['top'].set_visible(False)
-        ax3.spines['right'].set_visible(False)
+            y_top_n = max(yn_base.max(), yn_new.max()) * 0.88
+            ax1.annotate("", xy=(BASE_NORD + eff_nord, y_top_n), xytext=(BASE_NORD, y_top_n),
+                         arrowprops=dict(arrowstyle="<->", color='#2c3e50', lw=2))
+            ax1.text(BASE_NORD + eff_nord / 2, y_top_n * 1.05,
+                     f'+{eff_nord:.2f} Pkt.', ha='center',
+                     fontweight='bold', fontsize=10, color='#2c3e50')
 
-        return fig
+            ax1.set_title(f"Team Nord (1-5 Skala)\nd = {eff_nord:.2f} / {SD_NORD:.0f} = {d:.2f}",
+                          fontweight='bold', fontsize=11)
+            ax1.set_xlabel("Zufriedenheit (1-5 Punkte)")
+            ax1.set_ylabel("Dichte")
+            ax1.legend(fontsize=8)
+            ax1.spines['top'].set_visible(False)
+            ax1.spines['right'].set_visible(False)
+
+            # Team Süd
+            span_s = 3.5 * SD_SUED
+            x_s    = np.linspace(BASE_SUED - span_s, BASE_SUED + eff_sued + span_s, 400)
+            ys_base = norm.pdf(x_s, BASE_SUED,            SD_SUED)
+            ys_new  = norm.pdf(x_s, BASE_SUED + eff_sued, SD_SUED)
+
+            ax2.fill_between(x_s, ys_base, alpha=0.45, color='#95a5a6', label='Ohne SmartRail')
+            ax2.fill_between(x_s, ys_new,  alpha=0.55, color='#27ae60', label='Mit SmartRail')
+            ax2.axvline(BASE_SUED,            color='#7f8c8d', linestyle='dotted', lw=1.5)
+            ax2.axvline(BASE_SUED + eff_sued, color='#229954', linestyle='dotted', lw=1.5)
+
+            y_top_s = max(ys_base.max(), ys_new.max()) * 0.88
+            ax2.annotate("", xy=(BASE_SUED + eff_sued, y_top_s), xytext=(BASE_SUED, y_top_s),
+                         arrowprops=dict(arrowstyle="<->", color='#2c3e50', lw=2))
+            ax2.text(BASE_SUED + eff_sued / 2, y_top_s * 1.05,
+                     f'+{eff_sued:.1f} Pkt.', ha='center',
+                     fontweight='bold', fontsize=10, color='#2c3e50')
+
+            ax2.set_title(f"Team Süd (0-100 Skala)\nd = {eff_sued:.1f} / {SD_SUED:.0f} = {d:.2f}",
+                          fontweight='bold', fontsize=11)
+            ax2.set_xlabel("Zufriedenheit (0-100 Punkte)")
+            ax2.set_ylabel("Dichte")
+            ax2.legend(fontsize=8)
+            ax2.spines['top'].set_visible(False)
+            ax2.spines['right'].set_visible(False)
+
+            fig.subplots_adjust(wspace=0.35, bottom=0.15, top=0.82, left=0.08, right=0.97)
+            return fig
 
     @render.ui
-    def cohen_panel():
-        d_a = get_d(input.eff_a(), input.sd_a())
-        d_b = get_d(input.eff_b(), input.sd_b())
+    def info_panel():
+        aspekt = input.aspekt()
 
-        def label(d):
-            if d < 0.2:   return "sehr klein"
-            elif d < 0.5: return "klein"
-            elif d < 0.8: return "mittel"
-            else:          return "groß"
+        if aspekt == "detect":
+            sd   = input.sd_val()
+            d    = EFFECT_MIN / sd
+            prob = norm.cdf(d / np.sqrt(2)) * 100
 
-        winner = "A (Verspätung)" if d_a >= d_b else "B (Energie)"
-        col    = "#3498db"         if d_a >= d_b else "#27ae60"
+            if d >= 0.8:
+                farbe = "#27ae60"
+                fazit = "Effekt klar erkennbar."
+            elif d >= 0.4:
+                farbe = "#e67e22"
+                fazit = "Effekt maessig erkennbar."
+            else:
+                farbe = "#c0392b"
+                fazit = "Effekt geht im Rauschen unter."
 
-        return ui.div(
-            ui.tags.p(
-                ui.tags.span("d (Verspätung) = ", style="font-weight:bold;"),
-                ui.tags.span(f"{d_a:.2f} ", style="color:#3498db; font-weight:bold; font-size:15px;"),
-                ui.tags.span(f"({label(d_a)})", style="color:#7f8c8d; font-size:12px;"),
-            ),
-            ui.tags.p(
-                ui.tags.span("d (Energie) = ", style="font-weight:bold;"),
-                ui.tags.span(f"{d_b:.2f} ", style="color:#27ae60; font-weight:bold; font-size:15px;"),
-                ui.tags.span(f"({label(d_b)})", style="color:#7f8c8d; font-size:12px;"),
-            ),
-            ui.tags.hr(style="margin:8px 0;"),
-            ui.tags.p(
-                "Relativ zur Streuung größer: ",
-                ui.tags.span(f"Projekt {winner}", style=f"color:{col}; font-weight:bold;"),
-            ),
-            style="background:#f8f9fa; padding:12px; border-radius:8px; margin-top:8px; font-size:13px;"
-        )
+            return ui.div(
+                ui.tags.p(
+                    "d = ",
+                    ui.tags.span(f"{d:.2f}",
+                                 style=f"color:{farbe}; font-weight:bold; font-size:18px;"),
+                ),
+                ui.tags.p(f"{prob:.0f}% der Fahrten sind besser.",
+                          style="margin:2px 0;"),
+                ui.tags.p(fazit,
+                          style=f"color:{farbe}; font-style:italic; font-size:12px;"),
+                style="background:#f8f9fa; padding:12px; border-radius:8px; margin-top:8px;"
+            )
+
+        else:
+            d        = input.d_val()
+            eff_nord = d * SD_NORD
+            eff_sued = d * SD_SUED
+
+            return ui.div(
+                ui.tags.p("Team Nord (1-5 Skala):", style="font-weight:bold;"),
+                ui.tags.p(f"Roheffekt: +{eff_nord:.2f} Pkt. | d = {d:.2f}",
+                          style="color:#3498db; margin:2px 0;"),
+                ui.tags.hr(style="margin:6px 0;"),
+                ui.tags.p("Team Süd (0-100 Skala):", style="font-weight:bold;"),
+                ui.tags.p(f"Roheffekt: +{eff_sued:.1f} Pkt. | d = {d:.2f}",
+                          style="color:#27ae60; margin:2px 0;"),
+                ui.tags.hr(style="margin:6px 0;"),
+                ui.tags.p(
+                    "Beide messen denselben Effekt.",
+                    style="font-weight:bold; font-size:12px; color:#2c3e50;"
+                ),
+                style="background:#f8f9fa; padding:12px; border-radius:8px; "
+                      "margin-top:8px; font-size:13px;"
+            )
 
 app = App(app_ui, server)
 ```
