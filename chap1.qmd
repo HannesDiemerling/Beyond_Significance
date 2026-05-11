@@ -91,8 +91,12 @@ def server(input, output, session):
 
     def get_hamburg_data(sd):
         np.random.seed(21)
-        old_hb = np.random.normal(MEAN_OLD, sd, N)
-        new_hb = np.random.normal(MEAN_NEW, sd, N)
+        z_old = np.random.standard_normal(N)
+        z_new = np.random.standard_normal(N)
+        z_old -= z_old.mean()
+        z_new -= z_new.mean()
+        old_hb = MEAN_OLD + sd * z_old
+        new_hb = MEAN_NEW + sd * z_new
         return old_hb, new_hb
 
     @render.plot
