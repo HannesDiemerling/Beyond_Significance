@@ -8,23 +8,24 @@ format: html
 ### Theorie: Die Schubladen voller Fehlschläge
 Die Wissenschaft hat ein systemisches Problem mit der Veröffentlichung von Ergebnissen. Niemand muss aktiv lügen oder manipulieren, dennoch entsteht ein massiv verzerrtes Bild der Realität.
 
-Der Mechanismus ist einfach: Forscher reichen signifikante Ergebnisse zuverlässig ein, weil sie publizierbar sind. Nicht-signifikante Ergebnisse landen dagegen in der Schublade. Dies geschieht nicht aus Böswilligkeit, sondern weil Fachzeitschriften sie seltener annehmen und Forschende daher oft gar nicht erst die Mühe des Einreichens auf sich nehmen (Rosenthal, 1979). Das Ergebnis ist eine wissenschaftliche Literatur, die systematisch zu positiv ist.
+Der Mechanismus ist einfach: Forscher reichen signifikante Ergebnisse nahezu immer zur Publikation ein, weil sie publizierbar sind. Nicht-signifikante Ergebnisse landen dagegen häufiger in der Schublade. Dies geschieht nicht aus Böswilligkeit, sondern weil Fachzeitschriften sie ohnehin seltener annehmen und Forschende daher oft gar nicht erst die Mühe des Einreichens auf sich nehmen (Rosenthal, 1979). Das Ergebnis ist eine wissenschaftliche Literatur, die systematisch zu positiv ist.
 
-Wenn spätere Gutachter den Durchschnitt aller publizierten Studien berechnen, überschätzen sie den wahren Effekt massiv, weil die zahlreichen Null-Ergebnisse schlicht fehlen. Kein Betrug, kein Vorsatz. Nur ein System, das die falsche Frage belohnt: "Ist es signifikant?" statt "Wie groß ist der Effekt wirklich?"
+Wenn Forschende später den Durchschnitt aller publizierten Studien berechnen (z. B. im Rahmen einer Metaanalyse), überschätzen sie den wahren Effekt, weil die zahlreichen Null-Ergebnisse schlicht fehlen. Kein Betrug, kein Vorsatz. Nur ein System, das die falsche Frage belohnt: "Ist es signifikant?" statt "Wie groß ist der Effekt wirklich?"
 
 ### Beispiel SmartRail: 40 unabhängige Tests, ein verzerrtes Bild
 
-#TODO: Hier so umbauen, dass alles über 0.
-Unabhängige Forschungsteams testen SmartRail auf 40 Strecken. Der wahre Effekt ist auf all diesen Strecken null, das System bringt dort also keinen weiteren Vorteil. Durch normale statistische Streuung messen einige Teams zufällig einen positiven Effekt, andere einen negativen.
+Unabhängige Forschungsteams testen SmartRail auf 40 weiteren Strecken. Das System hat dort tatsächlich eine echte, aber kleine Wirkung: Der wahre mittlere Zeitgewinn beträgt 2 Minuten pro Fahrt. Weil die Teams unterschiedlich große Stichproben erheben und auf unterschiedlich störungsanfälligen Strecken messen, variiert die Präzision ihrer Schätzungen stark. Gut ausgestattete Teams messen den Effekt zuverlässig und signifikant. Schlechter ausgestattete Teams erhalten zwar im Durchschnitt ebenfalls rund 2 Minuten, verfehlen aber die Signifikanzschwelle, weil ihre Stichproben zu klein oder ihre Streuung zu groß ist.
 
-Teams mit signifikant positivem Ergebnis reichen ihre Studie sofort ein, da es sich hier um einen klaren Befund handelt. Teams ohne signifikantes Ergebnis zweifeln: "Haben wir etwas falsch gemacht? Lohnt sich der Aufwand der Einreichung?" Viele legen die Daten in die Schublade.
+Teams mit signifikantem Ergebnis reichen sofort ein. Teams ohne signifikantes Ergebnis zweifeln: "Haben wir etwas falsch gemacht? Lohnt sich der Aufwand der Einreichung?" Viele legen die Daten in die Schublade.
+
+Die Folge: Gutachter sehen nur die präzisesten Studien mit den stärksten gemessenen Effekten. Der Durchschnitt der publizierten Literatur liegt weit über dem wahren Effekt von 2 Minuten. Das System ist echt wirksam, aber die Literatur überschätzt sein Ausmaß massiv. Niemand hat gelogen.
 
 ### Deine Aufgabe
-Die Applikation zeigt alle 40 Testergebnisse als Balkenchart. Du steuerst, wie stark das Einreichungsverhalten das Bild verzerrt, von "alle reichen ein" bis "nur Signifikantes gelangt in die Literatur".
+Die Applikation zeigt alle 40 Testergebnisse als Balkenchart. Du steuerst, wie stark das Einreichungsverhalten das Bild verzerrt.
 
-1. **Ausgangslage:** Bei 0 % Einreichungslücke siehst du alle 40 Studien. Der Gutachter-Durchschnitt (rote Linie) liegt bei null. Kein Bias.
-2. **Einreichungslücke erhöhen:** Erhöhe den Regler schrittweise. Nicht-signifikante Studien verschwinden aus der Literatur, nicht weil jemand sie versteckt, sondern weil sie nie eingereicht wurden. Beobachte, wie der Gutachter-Durchschnitt steigt.
-3. **Maximaler Bias:** Nur noch signifikante Zufallstreffer sind in der Literatur sichtbar. Der Gutachter bescheinigt SmartRail eine messbare Wirkung, obwohl der wahre Effekt null ist. Niemand hat gelogen. Das System selbst hat das Bild verzerrt.
+1. **Ausgangslage:** Bei 0 % Einreichungslücke siehst du alle 40 Studien. Der Gutachter-Durchschnitt (farbige Linie) liegt nahe am wahren Effekt von 2 Minuten (gestrichelte Linie). Kein Bias.
+2. **Einreichungslücke erhöhen:** Erhöhe den Regler schrittweise. Nicht-signifikante Studien verschwinden aus der Literatur, nicht weil jemand sie versteckt, sondern weil sie nie eingereicht wurden. Beobachte, wie der Gutachter-Durchschnitt nach rechts driftet.
+3. **Maximaler Bias:** Nur noch die signifikantesten Studien sind sichtbar. Der Gutachter bescheinigt SmartRail eine weit größere Wirkung als die Realität zeigt. Der wahre Effekt existiert, aber die Literatur überschätzt ihn massiv. Niemand hat gelogen.
 
 <div id="shiny-loading" style="background:#f0f4ff; border-left:4px solid #4a6fa5; border-radius:4px; padding:10px 14px; margin-bottom:10px; font-size:14px; color:#2c3e50;">
   ⏳ Die Anwendung wird geladen, dies kann bis zu 30 Sekunden dauern.
@@ -45,18 +46,17 @@ Die Applikation zeigt alle 40 Testergebnisse als Balkenchart. Du steuerst, wie s
 
 from shiny import App, render, ui
 import numpy as np
-import matplotlib
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 from matplotlib.lines import Line2D
 
 np.random.seed(42)
 N           = 40
-TRUE_EFFECT = 0.0
+TRUE_EFFECT = 2.0                               # echter, aber kleiner Effekt in Minuten
 se_vals     = np.random.uniform(0.4, 2.0, N)
 effects     = np.random.normal(TRUE_EFFECT, se_vals, N)
-is_sig_pos  = (effects / se_vals) > 1.96   # einseitig positiv signifikant
-order       = np.argsort(effects)          # einmal sortieren, stabil
+is_sig_pos  = (effects / se_vals) > 1.96       # einseitig signifikant positiv
+order       = np.argsort(effects)              # einmal sortieren, stabil
 
 app_ui = ui.page_fluid(
     ui.card(
@@ -80,8 +80,6 @@ app_ui = ui.page_fluid(
 )
 
 def get_visible(pct):
-    """Signifikante Studien sind immer sichtbar.
-    Nicht-signifikante werden proportional zur Einreichungslücke entfernt."""
     nonsig_idx = np.where(~is_sig_pos)[0]
     n_hide     = int(len(nonsig_idx) * pct / 100)
     np.random.seed(7)
@@ -94,67 +92,53 @@ def server(input, output, session):
 
     @render.plot
     def results_plot():
-        pct     = input.bias_pct()
-        visible, hidden_idx = get_visible(pct)
-        hidden  = ~visible
-
-        reported_mean = np.mean(effects[visible]) if visible.sum() > 0 else 0.0
+        pct             = input.bias_pct()
+        visible, _      = get_visible(pct)
+        hidden          = ~visible
+        reported_mean   = np.mean(effects[visible]) if visible.sum() > 0 else TRUE_EFFECT
 
         fig, ax = plt.subplots(figsize=(11, 7))
 
-        # Balken zeichnen — sortiert von klein nach groß
         for rank, idx in enumerate(order):
             eff = effects[idx]
             if hidden[idx]:
-                ax.barh(rank, eff, color='#dfe6e9', alpha=0.45, height=0.7,
+                ax.barh(rank, eff, color='#dfe6e9', alpha=0.55, height=0.7,
                         edgecolor='#b2bec3', linewidth=0.5)
+            elif is_sig_pos[idx]:
+                ax.barh(rank, eff, color='#3498db', alpha=0.82, height=0.7)
             else:
-                color = '#3498db' if eff >= 0 else '#e74c3c'
-                ax.barh(rank, eff, color=color, alpha=0.82, height=0.7)
+                ax.barh(rank, eff, color='#a8d8ea', alpha=0.75, height=0.7)
 
-        # Trennlinie mit Beschriftung wenn es versteckte gibt
-        if hidden.sum() > 0:
-            # Grenze: höchster Rang einer versteckten Studie
-            hidden_ranks = [r for r, idx in enumerate(order) if hidden[idx]]
-            sig_ranks    = [r for r, idx in enumerate(order) if visible[idx] and is_sig_pos[idx]]
-            # Linie zwischen letzter nicht-sig-versteckter und erster sichtbarer Studie
-            split_rank = max(hidden_ranks) + 0.5
-            ax.axhline(split_rank, color='#95a5a6', linewidth=1.2, linestyle='dotted')
-            ax.text(5.4, split_rank + 0.3,
-                    f'{hidden.sum()} Studien nie\neingereicht',
-                    va='bottom', ha='right', fontsize=8,
-                    color='#7f8c8d', style='italic')
-
-        # Nulllinie (wahrer Effekt)
-        ax.axvline(0, color='#2c3e50', linewidth=1.8, linestyle='dotted')
+        # Wahrer Effekt
+        ax.axvline(TRUE_EFFECT, color='#2c3e50', linewidth=1.8, linestyle='dotted')
 
         # Gutachter-Durchschnitt
-        line_color = '#27ae60' if abs(reported_mean) < 0.25 else '#c0392b'
+        ueberschaetz = reported_mean - TRUE_EFFECT
+        line_color   = '#27ae60' if ueberschaetz < 0.5 else '#c0392b'
         ax.axvline(reported_mean, color=line_color, linewidth=3)
 
         ax.set_xlabel("Gemessener Zeitgewinn in Minuten", fontsize=11, labelpad=8)
         ax.set_yticks([])
-        ax.set_xlim(-5.5, 5.5)
+        ax.set_xlim(-3, 9)
         ax.set_ylim(-0.8, N + 0.5)
 
         title_color = '#27ae60' if pct == 0 else ('#e67e22' if pct < 70 else '#c0392b')
         ax.set_title(
-            f"40 SmartRail-Studien  |  in der Literatur sichtbar: {visible.sum()}, "
+            f"40 SmartRail-Studien  |  sichtbar: {visible.sum()}, "
             f"nie eingereicht: {hidden.sum()}",
             fontweight='bold', fontsize=11, color=title_color, pad=14
         )
 
-        patch_pos = mpatches.Patch(color='#3498db', alpha=0.82, label='Publiziert (positiv)')
-        patch_neg = mpatches.Patch(color='#e74c3c', alpha=0.82, label='Publiziert (negativ)')
+        patch_sig = mpatches.Patch(color='#3498db', alpha=0.82, label='Publiziert (signifikant)')
+        patch_ns  = mpatches.Patch(color='#a8d8ea', alpha=0.75, label='Publiziert (nicht signifikant)')
         patch_hid = mpatches.Patch(color='#dfe6e9', alpha=0.7,  label='Nie eingereicht (Schublade)')
-        line_null = Line2D([0], [0], color='#2c3e50', linewidth=1.8, linestyle='dotted',
-                           label='Wahrer Effekt (0 Min)')
+        line_true = Line2D([0], [0], color='#2c3e50', linewidth=1.8, linestyle='dotted',
+                           label=f'Wahrer Effekt ({TRUE_EFFECT:.0f} Min)')
         line_gut  = Line2D([0], [0], color=line_color, linewidth=3,
-                           label=f'Gutachter-Ø: {reported_mean:+.2f} Min')
+                           label=f'Gutachter-Ø: {reported_mean:.2f} Min')
 
-        ax.legend(handles=[patch_pos, patch_neg, patch_hid, line_null, line_gut],
+        ax.legend(handles=[patch_sig, patch_ns, patch_hid, line_true, line_gut],
                   loc='lower right', fontsize=9, framealpha=0.92)
-
         ax.spines['top'].set_visible(False)
         ax.spines['right'].set_visible(False)
         fig.subplots_adjust(left=0.06, right=0.97, top=0.88, bottom=0.12)
@@ -162,28 +146,29 @@ def server(input, output, session):
 
     @render.ui
     def bias_panel():
-        pct     = input.bias_pct()
-        visible, _ = get_visible(pct)
-        reported_mean = np.mean(effects[visible]) if visible.sum() > 0 else 0.0
+        pct           = input.bias_pct()
+        visible, _    = get_visible(pct)
+        reported_mean = np.mean(effects[visible]) if visible.sum() > 0 else TRUE_EFFECT
         ueberschaetz  = reported_mean - TRUE_EFFECT
         n_hidden      = N - visible.sum()
 
         if pct == 0:
-            interpretation = "Vollständiges Bild. Der Gutachter sieht die Realität: kein Effekt."
+            interpretation = (f"Vollständiges Bild. Gutachter-Durchschnitt liegt "
+                              f"nahe am wahren Effekt von {TRUE_EFFECT:.0f} Min.")
             interp_color   = "#27ae60"
-        elif abs(ueberschaetz) < 0.4:
-            interpretation = "Leichte Verzerrung, der Gutachter unterschätzt das Problem noch."
+        elif ueberschaetz < 0.5:
+            interpretation = "Leichte Überschätzung. Der Bias ist noch gering."
             interp_color   = "#e67e22"
         else:
             interpretation = (
-                f"Starke Verzerrung! Die Literatur suggeriert {reported_mean:.2f} Min "
-                f"Zeitgewinn — obwohl der wahre Effekt null ist. "
+                f"Starke Überschätzung! Die Literatur suggeriert {reported_mean:.1f} Min, "
+                f"der wahre Effekt beträgt nur {TRUE_EFFECT:.0f} Min. "
                 f"Niemand hat gelogen."
             )
             interp_color = "#c0392b"
 
-        sign = "+" if ueberschaetz >= 0 else ""
-        warn = "color:#c0392b; font-weight:bold;" if n_hidden > 0 else "color:#27ae60;"
+        warn  = "color:#c0392b; font-weight:bold;" if n_hidden > 0 else "color:#27ae60;"
+        sign  = "+" if ueberschaetz >= 0 else ""
 
         return ui.div(
             ui.tags.p(
@@ -197,14 +182,15 @@ def server(input, output, session):
             ui.tags.p(
                 ui.tags.span("Gutachter-Durchschnitt: ", style="font-weight:bold;"),
                 ui.tags.span(
-                    f"{reported_mean:+.2f} Minuten",
-                    style=f"color:{'#c0392b' if abs(reported_mean) > 0.25 else '#27ae60'};"
+                    f"{reported_mean:.2f} Minuten",
+                    style=f"color:{'#c0392b' if ueberschaetz >= 0.5 else '#27ae60'};"
                           f"font-weight:bold; font-size:14px;"
                 ),
             ),
             ui.tags.p(
                 ui.tags.span("Überschätzung: ", style="font-weight:bold;"),
-                f"{sign}{ueberschaetz:.2f} Min gegenüber dem wahren Effekt (0)",
+                f"{sign}{ueberschaetz:.2f} Min gegenüber dem wahren Effekt "
+                f"({TRUE_EFFECT:.0f} Min)",
             ),
             ui.tags.hr(style="margin:8px 0;"),
             ui.tags.p(
