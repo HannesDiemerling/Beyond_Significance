@@ -85,7 +85,7 @@ def server(input, output, session):
         ax.text(schwelle + 8, 0, f'Deine Schwelle:\n{schwelle} Sek',
                 va='center', fontweight='bold', fontsize=10, color='#2c3e50')
 
-        ax.set_xlim(0, max(schwelle * 1.6, eff * 1.4, 50))
+        ax.set_xlim(0, 720)
         ax.set_xlabel("Zeitgewinn in Sekunden pro Fahrt")
 
         status = "Praktisch relevant" if is_relevant else "Praktisch irrelevant"
