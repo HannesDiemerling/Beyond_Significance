@@ -18,14 +18,14 @@ Unabhängige Forschungsteams testen SmartRail auf 40 weiteren Strecken. Das Syst
 
 Teams mit signifikantem Ergebnis reichen sofort ein. Teams ohne signifikantes Ergebnis zweifeln: "Haben wir etwas falsch gemacht? Lohnt sich der Aufwand der Einreichung?" Viele legen die Daten in die Schublade.
 
-Die Folge: Gutachter sehen nur die präzisesten Studien mit den stärksten gemessenen Effekten. Der Durchschnitt der publizierten Literatur liegt weit über dem wahren Effekt von 2 Minuten. Das System ist echt wirksam, aber die Literatur überschätzt sein Ausmaß massiv. Niemand hat gelogen.
+Die Folge: Gutachter sehen vor allem die präziseren Studien mit den höheren gemessenen Effekten. Der Durchschnitt der publizierten Literatur liegt damit über dem wahren Effekt von 2 Minuten. Das System wirkt, aber die Literatur zeichnet ein zu positives Bild davon. Niemand hat gelogen.
 
 ### Deine Aufgabe
 Die Applikation zeigt alle 40 Testergebnisse als Balkenchart. Du steuerst, wie stark das Einreichungsverhalten das Bild verzerrt.
 
 1. **Ausgangslage:** Bei 0 % Einreichungslücke siehst du alle 40 Studien. Der Gutachter-Durchschnitt (farbige Linie) liegt nahe am wahren Effekt von 2 Minuten (gestrichelte Linie). Kein Bias.
 2. **Einreichungslücke erhöhen:** Erhöhe den Regler schrittweise. Nicht-signifikante Studien verschwinden aus der Literatur, nicht weil jemand sie versteckt, sondern weil sie nie eingereicht wurden. Beobachte, wie der Gutachter-Durchschnitt nach rechts driftet.
-3. **Maximaler Bias:** Nur noch die signifikantesten Studien sind sichtbar. Der Gutachter bescheinigt SmartRail eine weit größere Wirkung als die Realität zeigt. Der wahre Effekt existiert, aber die Literatur überschätzt ihn massiv. Niemand hat gelogen.
+3. **Maximaler Bias:** Nur noch die signifikantesten Studien sind sichtbar. Der Gutachter schätzt den Effekt von SmartRail höher ein als er tatsächlich ist. Niemand hat gelogen, aber das Bild ist verzerrt.
 
 <div id="shiny-loading" style="background:#f0f4ff; border-left:4px solid #4a6fa5; border-radius:4px; padding:10px 14px; margin-bottom:10px; font-size:14px; color:#2c3e50;">
   ⏳ Die Anwendung wird geladen, dies kann bis zu 30 Sekunden dauern.
