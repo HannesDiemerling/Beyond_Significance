@@ -35,5 +35,5 @@ Deine Rückmeldungen helfen dabei, dieses Lernangebot stetig zu optimieren. Bei 
 <nav class="workshop-nav">
   <span class="wnav-prev wnav-spacer"></span>
   <a class="wnav-hub" href="https://hannesdiemerling.github.io/Frequent-Reformation/"><span class="wnav-dir">⌂ Hub</span><span class="wnav-sub">Übersicht</span></a>
-  <a class="wnav-next" href="chap1.html"><span class="wnav-dir">Workshop starten →</span><span class="wnav-sub">2.1 Fehlinterpretationen und binäres Denken</span></a>
+  <a class="wnav-next" href="chap1.html"><span class="wnav-dir">Workshop starten →</span><span class="wnav-sub">Fehlinterpretationen und binäres Denken</span></a>
 </nav>
