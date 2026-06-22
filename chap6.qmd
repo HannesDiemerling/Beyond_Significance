@@ -1,5 +1,5 @@
 ---
-title: "2.6 Publikationsbias"
+title: "Publikationsbias"
 format: html
 ---
 
@@ -211,5 +211,5 @@ app = App(app_ui, server)
 <nav class="workshop-nav">
   <a class="wnav-prev" href="chap5.html"><span class="wnav-dir">← Zurück</span><span class="wnav-sub">2.5 Praktische Bedeutsamkeit</span></a>
   <a class="wnav-hub" href="https://hannesdiemerling.github.io/Frequent-Reformation/"><span class="wnav-dir">⌂ Hub</span><span class="wnav-sub">Übersicht</span></a>
-  <a class="wnav-next" href="https://hannesdiemerling.github.io/Frequent-Reformation/"><span class="wnav-dir">Workshop abgeschlossen →</span><span class="wnav-sub">Zurück zur Übersicht</span></a>
+  <a class="wnav-next" href="https://hannesdiemerling.github.io/True_Reliability/"><span class="wnav-dir">Nächster Workshop →</span><span class="wnav-sub">True Reliability</span></a>
 </nav>

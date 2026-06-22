@@ -1,5 +1,5 @@
 ---
-title: "2.1 Fehlinterpretationen und binäres Denken"
+title: "Fehlinterpretationen und binäres Denken"
 format: html
 ---
 
@@ -233,7 +233,7 @@ app = App(app_ui, server)
 ```
 
 <nav class="workshop-nav">
-  <a class="wnav-prev" href="https://hannesdiemerling.github.io/True_Reliability/"><span class="wnav-dir">← Vorheriger Workshop</span><span class="wnav-sub">True Reliability</span></a>
+  <span class="wnav-prev wnav-spacer"></span>
   <a class="wnav-hub" href="https://hannesdiemerling.github.io/Frequent-Reformation/"><span class="wnav-dir">⌂ Hub</span><span class="wnav-sub">Übersicht</span></a>
   <a class="wnav-next" href="chap2.html"><span class="wnav-dir">Weiter →</span><span class="wnav-sub">2.2 p Wert und Stichprobengröße</span></a>
 </nav>

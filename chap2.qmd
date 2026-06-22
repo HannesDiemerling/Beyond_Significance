@@ -1,5 +1,5 @@
 ---
-title: "2.2 p Wert und Stichprobengröße"
+title: "p Wert und Stichprobengröße"
 format: html
 ---
 

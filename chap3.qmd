@@ -1,5 +1,5 @@
 ---
-title: "2.3 Unstandardisierte Effekte"
+title: "Unstandardisierte Effekte"
 format: html
 ---
 
