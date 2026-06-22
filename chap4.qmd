@@ -258,7 +258,7 @@ app = App(app_ui, server)
 ```
 
 <nav class="workshop-nav">
-  <a class="wnav-prev" href="chap3.html"><span class="wnav-dir">← Zurück</span><span class="wnav-sub">2.3 Unstandardisierte Effekte</span></a>
+  <a class="wnav-prev" href="chap3.html"><span class="wnav-dir">← Zurück</span><span class="wnav-sub">Unstandardisierte Effekte</span></a>
   <a class="wnav-hub" href="https://hannesdiemerling.github.io/Frequent-Reformation/"><span class="wnav-dir">⌂ Hub</span><span class="wnav-sub">Übersicht</span></a>
-  <a class="wnav-next" href="chap5.html"><span class="wnav-dir">Weiter →</span><span class="wnav-sub">2.5 Praktische Bedeutsamkeit</span></a>
+  <a class="wnav-next" href="chap5.html"><span class="wnav-dir">Weiter →</span><span class="wnav-sub">Praktische Bedeutsamkeit</span></a>
 </nav>

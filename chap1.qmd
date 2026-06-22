@@ -235,5 +235,5 @@ app = App(app_ui, server)
 <nav class="workshop-nav">
   <span class="wnav-prev wnav-spacer"></span>
   <a class="wnav-hub" href="https://hannesdiemerling.github.io/Frequent-Reformation/"><span class="wnav-dir">⌂ Hub</span><span class="wnav-sub">Übersicht</span></a>
-  <a class="wnav-next" href="chap2.html"><span class="wnav-dir">Weiter →</span><span class="wnav-sub">2.2 p Wert und Stichprobengröße</span></a>
+  <a class="wnav-next" href="chap2.html"><span class="wnav-dir">Weiter →</span><span class="wnav-sub">p Wert und Stichprobengröße</span></a>
 </nav>
