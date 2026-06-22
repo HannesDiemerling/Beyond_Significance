@@ -8,7 +8,7 @@ format: html
 ### Theorie: Die Schubladen voller Fehlschläge
 Die Wissenschaft hat ein systemisches Problem mit der Veröffentlichung von Ergebnissen. Niemand muss aktiv lügen oder manipulieren, dennoch entsteht ein massiv verzerrtes Bild der Realität.
 
-Der Mechanismus ist einfach: Forscher reichen signifikante Ergebnisse nahezu immer zur Publikation ein, weil sie publizierbar sind. Nicht-signifikante Ergebnisse landen dagegen häufiger in der Schublade. Dies geschieht nicht aus Böswilligkeit, sondern weil Fachzeitschriften sie ohnehin seltener annehmen und Forschende daher oft gar nicht erst die Mühe des Einreichens auf sich nehmen (Rosenthal, 1979). Das Ergebnis ist eine wissenschaftliche Literatur, die systematisch zu positiv ist.
+Der Mechanismus ist einfach: Forscher reichen signifikante Ergebnisse nahezu immer zur Publikation ein, weil sie publizierbar sind. Nicht-signifikante Ergebnisse landen dagegen häufiger in der Schublade. Dies geschieht nicht aus Böswilligkeit, sondern weil Fachzeitschriften sie ohnehin seltener annehmen und Forschende daher oft gar nicht erst die Mühe des Einreichens auf sich nehmen. Das Ergebnis ist eine wissenschaftliche Literatur, die systematisch zu positiv ist.
 
 Wenn Forschende später den Durchschnitt aller publizierten Studien berechnen (z. B. im Rahmen einer Metaanalyse), überschätzen sie den wahren Effekt, weil die zahlreichen Null-Ergebnisse schlicht fehlen. Kein Betrug, kein Vorsatz. Nur ein System, das die falsche Frage belohnt: "Ist es signifikant?" statt "Wie groß ist der Effekt wirklich?"
 
@@ -18,14 +18,14 @@ Unabhängige Forschungsteams testen SmartRail auf 40 weiteren Strecken. Das Syst
 
 Teams mit signifikantem Ergebnis reichen sofort ein. Teams ohne signifikantes Ergebnis zweifeln: "Haben wir etwas falsch gemacht? Lohnt sich der Aufwand der Einreichung?" Viele legen die Daten in die Schublade.
 
-Die Folge: Gutachter sehen vor allem die präziseren Studien mit den höheren gemessenen Effekten. Der Durchschnitt der publizierten Literatur liegt damit über dem wahren Effekt von 2 Minuten. Das System wirkt, aber die Literatur zeichnet ein zu positives Bild davon. Niemand hat gelogen.
+Die Folge: In die Literatur und damit in jede spätere Metaanalyse fließen vor allem die präziseren Studien mit den höheren gemessenen Effekten ein. Der metaanalytische Durchschnitt der publizierten Studien liegt damit über dem wahren Effekt von 2 Minuten. Das System wirkt, aber die Literatur zeichnet ein zu positives Bild davon. Niemand hat gelogen.
 
 ### Deine Aufgabe
 Die Applikation zeigt alle 40 Testergebnisse als Balkenchart. Du steuerst, wie stark das Einreichungsverhalten das Bild verzerrt.
 
-1. **Ausgangslage:** Bei 0 % Einreichungslücke siehst du alle 40 Studien. Der Gutachter-Durchschnitt (farbige Linie) liegt nahe am wahren Effekt von 2 Minuten (gestrichelte Linie). Kein Bias.
-2. **Einreichungslücke erhöhen:** Erhöhe den Regler schrittweise. Nicht-signifikante Studien verschwinden aus der Literatur, nicht weil jemand sie versteckt, sondern weil sie nie eingereicht wurden. Beobachte, wie der Gutachter-Durchschnitt nach rechts driftet.
-3. **Maximaler Bias:** Nur noch die signifikantesten Studien sind sichtbar. Der Gutachter schätzt den Effekt von SmartRail höher ein als er tatsächlich ist. Niemand hat gelogen, aber das Bild ist verzerrt.
+1. **Ausgangslage:** Bei 0 % Einreichungslücke siehst du alle 40 Studien. Der metaanalytische Durchschnitt (farbige Linie) liegt nahe am wahren Effekt von 2 Minuten (gestrichelte Linie). Kein Bias.
+2. **Einreichungslücke erhöhen:** Erhöhe den Regler schrittweise. Nicht-signifikante Studien verschwinden aus der Literatur, nicht weil jemand sie versteckt, sondern weil sie nie eingereicht wurden. Beobachte, wie der metaanalytische Durchschnitt nach rechts driftet.
+3. **Maximaler Bias:** Nur noch die signifikantesten Studien sind sichtbar. Die Metaanalyse schätzt den Effekt von SmartRail höher ein als er tatsächlich ist. Niemand hat gelogen, aber das Bild ist verzerrt.
 
 <div id="shiny-loading" style="background:#f0f4ff; border-left:4px solid #4a6fa5; border-radius:4px; padding:10px 14px; margin-bottom:10px; font-size:14px; color:#2c3e50;">
   ⏳ Die Anwendung wird geladen, dies kann bis zu 30 Sekunden dauern.
@@ -112,13 +112,17 @@ def server(input, output, session):
         # Wahrer Effekt
         ax.axvline(TRUE_EFFECT, color='#2c3e50', linewidth=1.8, linestyle='dotted')
 
-        # Gutachter-Durchschnitt
+        # Metaanalytischer Durchschnitt
         ueberschaetz = reported_mean - TRUE_EFFECT
         line_color   = '#27ae60' if ueberschaetz < 0.5 else '#c0392b'
         ax.axvline(reported_mean, color=line_color, linewidth=3)
 
         ax.set_xlabel("Gemessener Zeitgewinn in Minuten", fontsize=11, labelpad=8)
-        ax.set_yticks([])
+        # Studien nummerieren: jede Studie behält eine feste Nummer (1..N),
+        # platziert an ihrer nach Effektgröße sortierten Position.
+        ax.set_yticks(range(N))
+        ax.set_yticklabels([f"Studie {idx + 1}" for idx in order], fontsize=6.5)
+        ax.set_ylabel("Studie", fontsize=11, labelpad=8)
         ax.set_xlim(-3, 9)
         ax.set_ylim(-0.8, N + 0.5)
 
@@ -135,7 +139,7 @@ def server(input, output, session):
         line_true = Line2D([0], [0], color='#2c3e50', linewidth=1.8, linestyle='dotted',
                            label=f'Wahrer Effekt ({TRUE_EFFECT:.0f} Min)')
         line_gut  = Line2D([0], [0], color=line_color, linewidth=3,
-                           label=f'Gutachter-Ø: {reported_mean:.2f} Min')
+                           label=f'Metaanalytischer Ø: {reported_mean:.2f} Min')
 
         ax.legend(handles=[patch_sig, patch_ns, patch_hid, line_true, line_gut],
                   loc='lower right', fontsize=9, framealpha=0.92)
@@ -153,7 +157,7 @@ def server(input, output, session):
         n_hidden      = N - visible.sum()
 
         if pct == 0:
-            interpretation = (f"Vollständiges Bild. Gutachter-Durchschnitt liegt "
+            interpretation = (f"Vollständiges Bild. Der metaanalytische Durchschnitt liegt "
                               f"nahe am wahren Effekt von {TRUE_EFFECT:.0f} Min.")
             interp_color   = "#27ae60"
         elif ueberschaetz < 0.5:
@@ -180,7 +184,7 @@ def server(input, output, session):
                 ui.tags.span(f"{n_hidden} Studien", style=warn),
             ),
             ui.tags.p(
-                ui.tags.span("Gutachter-Durchschnitt: ", style="font-weight:bold;"),
+                ui.tags.span("Metaanalytischer Durchschnitt: ", style="font-weight:bold;"),
                 ui.tags.span(
                     f"{reported_mean:.2f} Minuten",
                     style=f"color:{'#c0392b' if ueberschaetz >= 0.5 else '#27ae60'};"
@@ -203,3 +207,9 @@ def server(input, output, session):
 
 app = App(app_ui, server)
 ```
+
+<nav class="workshop-nav">
+  <a class="wnav-prev" href="chap5.html"><span class="wnav-dir">← Zurück</span><span class="wnav-sub">2.5 Praktische Bedeutsamkeit</span></a>
+  <a class="wnav-hub" href="https://hannesdiemerling.github.io/Frequent-Reformation/"><span class="wnav-dir">⌂ Hub</span><span class="wnav-sub">Übersicht</span></a>
+  <a class="wnav-next" href="https://hannesdiemerling.github.io/Frequent-Reformation/"><span class="wnav-dir">Workshop abgeschlossen →</span><span class="wnav-sub">Zurück zur Übersicht</span></a>
+</nav>

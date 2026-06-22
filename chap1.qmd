@@ -8,7 +8,7 @@ format: html
 ### Theorie: Die Illusion der harten Grenze
 Der p-Wert ist eine der am häufigsten missverstandene Metrik der Wissenschaft. Er liefert explizit keine Antworten auf die eigentlichen Kernfragen der Forschung. Er sagt dir weder, ob ein Effekt in der Realität vorhanden oder durch Zufall entstanden ist, noch wie wahrscheinlich es ist, dass dein Ergebnis bei einer Wiederholung der Studie identisch ausfällt.
 
-Besonders gefährlich ist die etablierte Praxis, eine starre Signifikanzschwelle (meist 0.05) zu definieren. Die Natur zieht keine magische Grenze zwischen p = 0.049 und p = 0.051. Ein solcher Schwellenwert erzwingt unlogische, rein binäre Entscheidungen (Gigerenzer, 2004). Er überlagert den Blick auf die echten Daten und verführt dazu, messbare Nuancen in ein extremes "Erfolg" oder "Misserfolg" Schema zu pressen. In der Praxis geht es häufig noch weiter: Viele betrachten ausschließlich den p-Wert — ohne die Rohdaten oder den eigentlichen Effekt zu betrachten. Oder sie schauen sich den Effekt nur dann an, wenn p signifikant war.
+Besonders gefährlich ist die etablierte Praxis, eine starre Signifikanzschwelle (meist 0.05) zu definieren. Die Natur zieht keine magische Grenze zwischen p = 0.049 und p = 0.051. Ein solcher Schwellenwert erzwingt unlogische, rein binäre Entscheidungen. Er überlagert den Blick auf die echten Daten und verführt dazu, messbare Nuancen in ein extremes "Erfolg" oder "Misserfolg" Schema zu pressen. In der Praxis geht es häufig noch weiter: Viele betrachten ausschließlich den p-Wert — ohne die Rohdaten oder den eigentlichen Effekt zu betrachten. Oder sie schauen sich den Effekt nur dann an, wenn p signifikant war.
 
 ### Beispiel SmartRail: Zwei Strecken, eine Entscheidung
 Die Deutsche Bahn testet SmartRail auf zwei Fernverkehrsstrecken. Auf der Strecke München–Frankfurt und auf der Strecke Hamburg–Berlin werden je 30 ICE-Fahrten mit dem neuen System aufgezeichnet und mit dem alten Betrieb verglichen.
@@ -47,6 +47,10 @@ from shiny import App, ui, render
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.stats import ttest_ind
+
+# Größere Grundschrift, damit der Text auch dann lesbar bleibt, wenn das
+# Plot-Bild auf kleineren Bildschirmen herunterskaliert wird.
+plt.rcParams.update({"font.size": 13})
 
 np.random.seed(7)
 N = 30
@@ -227,3 +231,9 @@ def server(input, output, session):
 
 app = App(app_ui, server)
 ```
+
+<nav class="workshop-nav">
+  <a class="wnav-prev" href="https://hannesdiemerling.github.io/True_Reliability/"><span class="wnav-dir">← Vorheriger Workshop</span><span class="wnav-sub">True Reliability</span></a>
+  <a class="wnav-hub" href="https://hannesdiemerling.github.io/Frequent-Reformation/"><span class="wnav-dir">⌂ Hub</span><span class="wnav-sub">Übersicht</span></a>
+  <a class="wnav-next" href="chap2.html"><span class="wnav-dir">Weiter →</span><span class="wnav-sub">2.2 p Wert und Stichprobengröße</span></a>
+</nav>

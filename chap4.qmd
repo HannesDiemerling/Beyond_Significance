@@ -17,9 +17,9 @@ Cohens d adressiert beide Probleme, indem es den Effekt in Einheiten der Standar
 
 $$d = \frac{|\bar{M}_1 - \bar{M}_2|}{SD}$$
 
-Ein d = 0.5 bedeutet: Die Gruppen liegen eine halbe Standardabweichung auseinander. Weil der Effekt nun relativ zur natürlichen Variabilität der Messung ausgedrückt ist, lassen sich Studien mit unterschiedlichen Skalen direkt vergleichen.
+Ein d = 0.5 bedeutet: Die Gruppen-Mittelwerte liegen eine halbe Standardabweichung auseinander. Weil der Effekt nun relativ zur natürlichen Variabilität der Messung ausgedrückt ist, lassen sich Studien mit unterschiedlichen Skalen direkt vergleichen.
 
-**Wichtiger Vorbehalt:** Die Richtwerte von Cohen (0.2, 0.5, 0.8) sind grobe Orientierungen, keine inhaltlichen Kriterien (Cohen, 1988). Ein d = 0.3 kann in einem Kontext wichtig und in einem anderen trivial sein. Die Interpretation erfordert immer den sachlichen Kontext.
+**Wichtiger Vorbehalt:** Die Richtwerte von Cohen (0.2, 0.5, 0.8) sind grobe Orientierungen, keine inhaltlichen Kriterien. Ein d = 0.3 kann in einem Kontext wichtig und in einem anderen trivial sein. Die Interpretation erfordert immer den sachlichen Kontext.
 
 ### Beispiel SmartRail: Zwei Aspekte, eine Formel
 
@@ -256,3 +256,9 @@ def server(input, output, session):
 
 app = App(app_ui, server)
 ```
+
+<nav class="workshop-nav">
+  <a class="wnav-prev" href="chap3.html"><span class="wnav-dir">← Zurück</span><span class="wnav-sub">2.3 Unstandardisierte Effekte</span></a>
+  <a class="wnav-hub" href="https://hannesdiemerling.github.io/Frequent-Reformation/"><span class="wnav-dir">⌂ Hub</span><span class="wnav-sub">Übersicht</span></a>
+  <a class="wnav-next" href="chap5.html"><span class="wnav-dir">Weiter →</span><span class="wnav-sub">2.5 Praktische Bedeutsamkeit</span></a>
+</nav>

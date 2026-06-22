@@ -1,0 +1,71 @@
+/* ==========================================================================
+   Workshop-Navigationsleiste
+   Siehe claudenavbar.md für die Logik. Dieser Block 1:1 in die anderen
+   Workshops übertragbar.
+   ========================================================================== */
+
+.workshop-nav {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 12px;
+  align-items: stretch;
+  margin: 3rem 0 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e2e8f0;
+}
+
+.workshop-nav a {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  padding: 12px 16px;
+  border: 1px solid #d6dee8;
+  border-radius: 8px;
+  background: #f8fafc;
+  color: #2c3e50;
+  text-decoration: none;
+  transition: background 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+}
+
+.workshop-nav a:hover {
+  background: #eef3fb;
+  border-color: #4a6fa5;
+  transform: translateY(-1px);
+}
+
+/* Slot-Ausrichtung: links / mitte / rechts */
+.wnav-prev { text-align: left; }
+.wnav-hub  { text-align: center; align-items: center; }
+.wnav-next { text-align: right; align-items: flex-end; }
+
+.wnav-dir {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #4a6fa5;
+}
+
+.wnav-sub {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #2c3e50;
+}
+
+/* Leerer Platzhalter (erste Seite des ersten Workshops) */
+.wnav-spacer {
+  border: none;
+  background: transparent;
+}
+
+@media (max-width: 600px) {
+  .workshop-nav {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .wnav-prev, .wnav-hub, .wnav-next {
+    text-align: center;
+    align-items: center;
+  }
+  .wnav-spacer { display: none; }
+}

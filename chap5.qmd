@@ -8,7 +8,9 @@ format: html
 ### Theorie: Messbar ist nicht gleich wichtig
 Statistische Signifikanz wird oft fälschlicherweise mit praktischer Bedeutsamkeit gleichgesetzt. Die Relevanz einer Maßnahme für die Praxis kann ausschließlich anhand der Effekte oder Effektgrößen beurteilt werden.
 
-Über den echten Nutzen in der realen Welt sagt fast gar nichts aus. Cohen kritisierte diese Verwechslung scharf und betonte, dass eine quantitative Wissenschaft ihr primäres Ziel verfehlt, wenn sie Entscheidungen auf p Werte stützt anstatt auf die Größe von Effekten (Cohen, 1990).
+Über den echten Nutzen in der realen Welt sagt der p-wert fast gar nichts aus. Cohen kritisierte diese Verwechslung scharf und betonte, dass eine quantitative Wissenschaft ihr primäres Ziel verfehlt, wenn sie Entscheidungen auf p Werte stützt anstatt auf die Größe von Effekten.
+
+Wichtig ist außerdem: Für die Beurteilung der praktischen Bedeutsamkeit zählt oft gerade der **unstandardisierte** Effekt in seiner natürlichen Einheit. Manche Fragestellungen lassen sich überhaupt nur mit unstandardisierten Effekten sinnvoll prüfen, weil erst die Rohgröße die für die Entscheidung relevante Information trägt: gesparte Sekunden pro Fahrt, eingesparte Euro, gewonnene Lebensjahre. Eine standardisierte Effektgröße wie Cohens d macht Studien zwar vergleichbar, sagt aber für sich genommen nichts darüber aus, ob ein Effekt die Kosten rechtfertigt — die hier entscheidende Schwelle ist immer in der konkreten Einheit definiert, nicht in Standardabweichungen.
 
 ### Beispiel SmartRail: Das hochsignifikante Nichts
 Die Bahn investiert 180 Millionen Euro in den bundesweiten SmartRail Rollout. Eine gigantische Studie mit 200.000 ICE Fahrten zeigt: SmartRail verbessert die Pünktlichkeit statistisch hochsignifikant, p < 0.001. Das Projektteam präsentiert den winzigen p Wert als Beleg für einen enormen Erfolg.
@@ -146,3 +148,9 @@ def server(input, output, session):
 
 app = App(app_ui, server)
 ```
+
+<nav class="workshop-nav">
+  <a class="wnav-prev" href="chap4.html"><span class="wnav-dir">← Zurück</span><span class="wnav-sub">2.4 Standardisierte Effektgrößen</span></a>
+  <a class="wnav-hub" href="https://hannesdiemerling.github.io/Frequent-Reformation/"><span class="wnav-dir">⌂ Hub</span><span class="wnav-sub">Übersicht</span></a>
+  <a class="wnav-next" href="chap6.html"><span class="wnav-dir">Weiter →</span><span class="wnav-sub">2.6 Publikationsbias</span></a>
+</nav>

@@ -6,9 +6,9 @@ format: html
 ## Zeit: 15 min | Schwierigkeit: Einsteiger
 
 ### Theorie: Wahre Größe oder reine Datenmasse
-Der p Wert ist eine rein inferenzstatistische Größe. Er berechnet sich aus dem Standardfehler und der Stichprobengröße. Er liefert keine direkte Aussage zur wahren Größe oder zur praktischen Relevanz des gefundenen Effektes.
+Der p Wert ist eine rein inferenzstatistische Größe. Er hängt stark von der Stichprobengröße ab. Er liefert keine direkte Aussage zur wahren Größe oder zur praktischen Relevanz des gefundenen Effektes.
 
-Das mathematische Prinzip lautet wie folgt. Der Standardfehler schrumpft automatisch, wenn du die Stichprobengröße erhöhst. Bei einer sehr großen Datenmenge wird der Standardfehler extrem klein. In der Folge wird fast jeder noch so triviale und praktisch irrelevante Unterschied statistisch signifikant (Lin et al., 2013). Die Signifikanz testet primär deine Stichprobengröße, nicht die Größe oder Wichtigkeit des gefundenen Effektes.
+Das mathematische Prinzip lautet wie folgt. Der Standardfehler schrumpft automatisch, wenn du die Stichprobengröße erhöhst. Bei einer sehr großen Datenmenge wird der Standardfehler extrem klein. In der Folge wird fast jeder noch so triviale und praktisch irrelevante Unterschied statistisch signifikant. Die Signifikanz testet primär deine Stichprobengröße, nicht die Größe oder Wichtigkeit des gefundenen Effektes.
 
 ### Beispiel SmartRail: Der irrelevante Rekord
 Die Deutsche Bahn wertet die SmartRail Daten aus. Das System verbessert die Pünktlichkeit der ICE Züge um 12 Sekunden im Durchschnitt. Für dich als Pendler ist dieser Unterschied im Alltag unsichtbar und volkommen irrelevant. Du verpasst deinen Anschlusszug genauso wie vorher.
@@ -45,6 +45,10 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
 from scipy.stats import t as t_dist
 
+# Etwas größere Grundschrift, damit der Text auch auf kleineren
+# Bildschirmen (skaliertes Plot-Bild) lesbar bleibt.
+plt.rcParams.update({"font.size": 12})
+
 # Konstanten
 DIFF = 0.2   # 12 Sekunden in Minuten
 SD   = 3.0
@@ -80,8 +84,10 @@ def server(input, output, session):
         n = input.n_trains()
         p_val = compute_p(n)
 
-        # Größere Figure-Width (14 statt 12) zur Vermeidung von Quetschungen
-        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 6))
+        # Größere Figure-Width (14 statt 12) zur Vermeidung von Quetschungen.
+        # constrained_layout verhindert das Überlappen von Titeln, Achsen-
+        # beschriftungen und Legende automatisch.
+        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 6), constrained_layout=True)
 
         # Linkes Panel: p-Wert-Kurve
         n_vals = np.linspace(10, 5000, 400)
@@ -125,15 +131,12 @@ def server(input, output, session):
         ax2.set_xticklabels(labels, fontsize=11)
         ax2.set_ylabel("Durchschnittliche Verspätung (Minuten)")
         ax2.set_title(
-            f"Effekt: {DIFF*60:.0f} Sek | 95% KI: ±{ci:.2f} Min",
+            f"Effekt: {DIFF*60:.0f} Sek | 95% KI: ±{ci*60:.1f} Sek",
             fontsize=10
         )
         ax2.spines['top'].set_visible(False)
         ax2.spines['right'].set_visible(False)
 
-        # Manuelle Abstände statt tight_layout für mehr Stabilität
-        fig.subplots_adjust(wspace=0.3, bottom=0.15, left=0.1, right=0.95)
-        
         return fig
 
     @render.ui
@@ -152,7 +155,7 @@ def server(input, output, session):
                 ui.tags.span(status_text, style=f"color:{status_color}; font-weight:bold;"),
             ),
             ui.tags.p(f"p = {p_val:.4f}", style="font-weight:bold; margin:2px 0;"),
-            ui.tags.p(f"95% KI: ±{ci:.2f} Minuten", style="margin:2px 0;"),
+            ui.tags.p(f"95% KI: ±{ci*60:.0f} Sekunden", style="margin:2px 0;"),
             ui.tags.hr(style="margin:8px 0;"),
             ui.tags.p(
                 "Wahrer Effekt: konstant 12 Sekunden.",
@@ -163,3 +166,9 @@ def server(input, output, session):
 
 app = App(app_ui, server)
 ```
+
+<nav class="workshop-nav">
+  <a class="wnav-prev" href="chap1.html"><span class="wnav-dir">← Zurück</span><span class="wnav-sub">2.1 Fehlinterpretationen und binäres Denken</span></a>
+  <a class="wnav-hub" href="https://hannesdiemerling.github.io/Frequent-Reformation/"><span class="wnav-dir">⌂ Hub</span><span class="wnav-sub">Übersicht</span></a>
+  <a class="wnav-next" href="chap3.html"><span class="wnav-dir">Weiter →</span><span class="wnav-sub">2.3 Unstandardisierte Effekte</span></a>
+</nav>
