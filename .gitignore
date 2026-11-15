@@ -211,3 +211,7 @@ __marimo__/
 claudenavbar.md
 # Editor settings
 .vscode/
+
+# Quarto output and locally installed extensions
+_site/
+/_extensions/
