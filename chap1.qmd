@@ -6,7 +6,7 @@ format: html
 ## Zeit: 15 min | Schwierigkeit: Einsteiger
 
 ### Theorie: Die Illusion der harten Grenze
-Der p-Wert ist eine der am häufigsten missverstandene Metrik der Wissenschaft. Er liefert explizit keine Antworten auf die eigentlichen Kernfragen der Forschung. Er sagt dir weder, ob ein Effekt in der Realität vorhanden oder durch Zufall entstanden ist, noch wie wahrscheinlich es ist, dass dein Ergebnis bei einer Wiederholung der Studie identisch ausfällt.
+Der p-Wert ist eine der am häufigsten missverstandenen Metriken der Wissenschaft. Er liefert explizit keine Antworten auf die eigentlichen Kernfragen der Forschung. Er sagt dir weder, ob ein Effekt in der Realität vorhanden oder durch Zufall entstanden ist, noch wie wahrscheinlich es ist, dass dein Ergebnis bei einer Wiederholung der Studie identisch ausfällt.
 
 Besonders gefährlich ist die etablierte Praxis, eine starre Signifikanzschwelle (meist 0.05) zu definieren. Die Natur zieht keine magische Grenze zwischen p = 0.049 und p = 0.051. Ein solcher Schwellenwert erzwingt unlogische, rein binäre Entscheidungen. Er überlagert den Blick auf die echten Daten und verführt dazu, messbare Nuancen in ein extremes "Erfolg" oder "Misserfolg" Schema zu pressen. In der Praxis geht es häufig noch weiter: Viele betrachten ausschließlich den p-Wert — ohne die Rohdaten oder den eigentlichen Effekt zu betrachten. Oder sie schauen sich den Effekt nur dann an, wenn p signifikant war.
 
@@ -17,7 +17,7 @@ Auf der Strecke München–Frankfurt zeigt die Auswertung eine klare Verbesserun
 
 Auf der Strecke Hamburg–Berlin sehen die Rohdaten nahezu identisch aus. SmartRail spart dort ebenfalls rund 2.1 Minuten. Doch wegen leicht größerer Streuung an diesem Tag liegt der p-Wert bei 0.053. Die Software meldet: nicht signifikant. Das dortige Team stuft SmartRail als wirkungslos ein.
 
-Zwei faktisch gleich starke Effekte. Zwei konträre Entscheidungen. Der einzige Unterschied: zwei hundertstel im p-Wert.
+Zwei faktisch gleich starke Effekte. Zwei konträre Entscheidungen. Der einzige Unterschied: zwei Hundertstel im p-Wert.
 
 ### Deine Aufgabe
 Die Applikation simuliert drei typische Vorgehensweisen im Umgang mit p-Werten — vom reinen p-Wert-Blick bis zur vollständigen Datenanalyse. Oben links wählst du den Ansichtsmodus, unten links die Streuung für Hamburg–Berlin.

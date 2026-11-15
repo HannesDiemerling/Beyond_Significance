@@ -8,7 +8,7 @@ format: html
 ### Theorie: Messbar ist nicht gleich wichtig
 Statistische Signifikanz wird oft fälschlicherweise mit praktischer Bedeutsamkeit gleichgesetzt. Die Relevanz einer Maßnahme für die Praxis kann ausschließlich anhand der Effekte oder Effektgrößen beurteilt werden.
 
-Über den echten Nutzen in der realen Welt sagt der p-wert fast gar nichts aus. Cohen kritisierte diese Verwechslung scharf und betonte, dass eine quantitative Wissenschaft ihr primäres Ziel verfehlt, wenn sie Entscheidungen auf p Werte stützt anstatt auf die Größe von Effekten.
+Über den echten Nutzen in der realen Welt sagt der p-Wert fast gar nichts aus. Cohen kritisierte diese Verwechslung scharf und betonte, dass eine quantitative Wissenschaft ihr primäres Ziel verfehlt, wenn sie Entscheidungen auf p Werte stützt anstatt auf die Größe von Effekten.
 
 Wichtig ist außerdem: Für die Beurteilung der praktischen Bedeutsamkeit zählt oft gerade der **unstandardisierte** Effekt in seiner natürlichen Einheit. Manche Fragestellungen lassen sich überhaupt nur mit unstandardisierten Effekten sinnvoll prüfen, weil erst die Rohgröße die für die Entscheidung relevante Information trägt: gesparte Sekunden pro Fahrt, eingesparte Euro, gewonnene Lebensjahre. Eine standardisierte Effektgröße wie Cohens d macht Studien zwar vergleichbar, sagt aber für sich genommen nichts darüber aus, ob ein Effekt die Kosten rechtfertigt — die hier entscheidende Schwelle ist immer in der konkreten Einheit definiert, nicht in Standardabweichungen.
 

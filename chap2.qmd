@@ -11,7 +11,7 @@ Der p Wert ist eine rein inferenzstatistische Größe. Er hängt stark von der S
 Das mathematische Prinzip lautet wie folgt. Der Standardfehler schrumpft automatisch, wenn du die Stichprobengröße erhöhst. Bei einer sehr großen Datenmenge wird der Standardfehler extrem klein. In der Folge wird fast jeder noch so triviale und praktisch irrelevante Unterschied statistisch signifikant. Die Signifikanz testet primär deine Stichprobengröße, nicht die Größe oder Wichtigkeit des gefundenen Effektes.
 
 ### Beispiel SmartRail: Der irrelevante Rekord
-Die Deutsche Bahn wertet die SmartRail Daten aus. Das System verbessert die Pünktlichkeit der ICE Züge um 12 Sekunden im Durchschnitt. Für dich als Pendler ist dieser Unterschied im Alltag unsichtbar und volkommen irrelevant. Du verpasst deinen Anschlusszug genauso wie vorher.
+Die Deutsche Bahn wertet die SmartRail Daten aus. Das System verbessert die Pünktlichkeit der ICE Züge um 12 Sekunden im Durchschnitt. Für dich als Pendler ist dieser Unterschied im Alltag unsichtbar und vollkommen irrelevant. Du verpasst deinen Anschlusszug genauso wie vorher.
 
 Misst du nun die Verspätung von 20 ICE Zügen, liefert der statistische Test ein nicht signifikantes Ergebnis. Sammelst du jedoch systematisch die Daten von 5000 Fahrten, schrumpft der Standardfehler massiv. Der p Wert fällt unter die magische Schwelle. Die Statistik meldet plötzlich einen hochsignifikanten Unterschied. Die Versuchung ist groß, dies als technischen Durchbruch zu feiern. In der Realität verpasst du deinen Anschlusszug weiterhin genauso oft. Die statistische Signifikanz verdeckt die praktische Irrelevanz.
 
@@ -20,7 +20,7 @@ Die Applikation zeigt dir links die Veränderung des p Wertes mit steigender Dat
 
 1. **Beobachten:** Belasse den Regler bei wenigen ICE Zügen. Der p Wert ist groß, das Ergebnis nicht signifikant. Die Konfidenzintervalle überlappen stark.
 2. **Datenflut simulieren:** Erhöhe die Anzahl der gemessenen Züge kontinuierlich. Beobachte: Der p Wert sinkt, die Konfidenzintervalle werden schmaler.
-3. **Das Entscheidende erkennen:** Die Balken selbst bewegen sich nicht. Der Effekt bleibt konstant bei 12 Sekunden. Nur unsere Stichprobengröße steigt. Signifikanz bedeutet hier ausschließlich: "Wir haben genug Daten gesammelt, um auch zu einer winzigen Differenz etwas statistisch verlässliches sagen zu können."
+3. **Das Entscheidende erkennen:** Die Balken selbst bewegen sich nicht. Der Effekt bleibt konstant bei 12 Sekunden. Nur unsere Stichprobengröße steigt. Signifikanz bedeutet hier ausschließlich: "Wir haben genug Daten gesammelt, um auch zu einer winzigen Differenz etwas statistisch Verlässliches sagen zu können."
 
 <div id="shiny-loading" style="background:#f0f4ff; border-left:4px solid #4a6fa5; border-radius:4px; padding:10px 14px; margin-bottom:10px; font-size:14px; color:#2c3e50;">
   ⏳ Die Anwendung wird geladen, dies kann bis zu 30 Sekunden dauern.
