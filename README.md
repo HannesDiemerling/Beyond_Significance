@@ -17,10 +17,20 @@ browser. No installation is needed.
 | 5 | Praktische Bedeutsamkeit (practical significance) |
 | 6 | Publikationsbias (publication bias) |
 
+## Structure
+
+- `index.md`: start page
+- `chap1.qmd` to `chap6.qmd`: one chapter each; the app code sits in the
+  `shinylive-python` block of the chapter
+- `_quarto.yml`: site configuration and sidebar
+- `styles.css`: navigation bar between chapters and workshops
+- `.github/workflows/publish.yml`: build and deployment
+
 ## Build locally
 
 The site is a [Quarto](https://quarto.org) website. The apps are written in
-Python with Shiny and embedded with the Shinylive extension.
+Python with Shiny and embedded with the Shinylive extension. The workflow
+builds with Python 3.11.
 
 ```bash
 pip install -r requirements.txt
@@ -28,8 +38,15 @@ quarto add quarto-ext/shinylive
 quarto preview
 ```
 
+`quarto render` writes the site to `_site/`. `quarto add` installs the
+extension into `_extensions/`, which is not part of the repository.
+
 Every push to `main` publishes the site to GitHub Pages.
 
 ## License
 
-MIT
+Code: MIT (see `LICENSE`). This repository states no separate license for the workshop texts.
+
+## Author
+
+Hannes Diemerling ([GitHub](https://github.com/HannesDiemerling), ORCID [0009-0002-6027-9181](https://orcid.org/0009-0002-6027-9181))
